@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 import { ProductListViewModel } from './product-list.viewmodel';
 import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
 
@@ -21,7 +21,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     RouterLink, FormsModule, CurrencyPipe,
     MatButtonModule, MatIconModule, MatInputModule,
     MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule, MatTooltipModule,
-    MatButtonToggleModule
+    MatSliderModule
   ],
   template: `
     <div class="page">
@@ -59,22 +59,11 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
         </mat-form-field>
         
         <div class="filters__view-controls">
-          <mat-button-toggle-group [(ngModel)]="viewMode" aria-label="Modo de visualização">
-            <mat-button-toggle value="list" matTooltip="Lista Simplificada"><mat-icon>view_list</mat-icon></mat-button-toggle>
-            <mat-button-toggle value="detailed" matTooltip="Lista Detalhada"><mat-icon>table_rows</mat-icon></mat-button-toggle>
-            <mat-button-toggle value="cards" matTooltip="Cards"><mat-icon>grid_view</mat-icon></mat-button-toggle>
-          </mat-button-toggle-group>
-
-          @if (viewMode === 'cards') {
-            <mat-form-field appearance="outline" class="filters__card-size">
-              <mat-label>Tamanho</mat-label>
-              <mat-select [(ngModel)]="cardSize">
-                <mat-option value="small">Pequeno</mat-option>
-                <mat-option value="medium">Médio</mat-option>
-                <mat-option value="large">Grande</mat-option>
-              </mat-select>
-            </mat-form-field>
-          }
+          <mat-icon matTooltip="Cards Menores" class="slider-icon">grid_view</mat-icon>
+          <mat-slider min="200" max="1000" step="10" class="view-slider" color="primary">
+            <input matSliderThumb [(ngModel)]="zoomValue">
+          </mat-slider>
+          <mat-icon matTooltip="Cards Maiores / Lista" class="slider-icon">view_list</mat-icon>
         </div>
       </div>
 
@@ -89,7 +78,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
       } @else {
         
         @if (viewMode === 'cards') {
-          <div class="cards-grid" [class]="'cards-grid--' + cardSize">
+          <div class="cards-grid" [style.grid-template-columns]="'repeat(auto-fill, minmax(' + zoomValue + 'px, 1fr))'">
             @for (product of vm.filtered(); track product.id) {
               <div class="product-card" [class.product-card--inactive]="!product.active">
                 @if (product.imageUrl) {
@@ -210,13 +199,11 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     .filters__search { flex: 1; min-width: 200px; }
     .filters__category { width: 180px; }
     .filters__status { width: 160px; }
-    .filters__view-controls { display: flex; gap: 16px; align-items: center; margin-left: auto; height: 56px; }
-    .filters__card-size { width: 160px; }
+    .filters__view-controls { display: flex; gap: 8px; align-items: center; margin-left: auto; height: 56px; background: #fff; padding: 0 16px; border-radius: 99px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .view-slider { width: 160px; }
+    .slider-icon { color: #666; font-size: 20px; width: 20px; height: 20px; }
 
     .cards-grid { display: grid; gap: 20px; }
-    .cards-grid--small { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-    .cards-grid--medium { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-    .cards-grid--large { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
 
     .product-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
     .product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
@@ -284,8 +271,13 @@ export class ProductListComponent implements OnInit {
   categoryFilterValue: string = 'all';
   activeFilterValue: 'all' | 'active' | 'inactive' = 'all';
 
-  viewMode: 'list' | 'detailed' | 'cards' = 'cards';
-  cardSize: 'small' | 'medium' | 'large' = 'medium';
+  zoomValue = 300;
+
+  get viewMode(): 'list' | 'detailed' | 'cards' {
+    if (this.zoomValue >= 900) return 'detailed';
+    if (this.zoomValue >= 700) return 'list';
+    return 'cards';
+  }
 
   ngOnInit(): void {
     this.vm.load();
