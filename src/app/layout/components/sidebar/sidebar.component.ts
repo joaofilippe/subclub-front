@@ -40,6 +40,7 @@ export class SidebarComponent {
   navItems: NavItem[] = [
     { label: 'Assinaturas', icon: 'subscriptions', route: '/subscriptions' },
     { label: 'Clientes', icon: 'people', route: '/clients' },
-    { label: 'Planos', icon: 'inventory_2', route: '/plans' }
+    { label: 'Planos', icon: 'inventory_2', route: '/plans' },
+    { label: 'Produtos', icon: 'category', route: '/products' }
   ];
 }

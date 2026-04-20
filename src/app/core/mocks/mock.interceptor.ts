@@ -3,6 +3,7 @@ import { of, delay } from 'rxjs';
 import { MOCK_AUTH_RESPONSE } from './mock-auth.data';
 import { MOCK_CLIENTS, MOCK_CLIENTS_PAGED } from './mock-clients.data';
 import { MOCK_PLANS } from './mock-plans.data';
+import { MOCK_PRODUCTS } from './mock-products.data';
 import { MOCK_SUBSCRIPTIONS, MOCK_SUBSCRIPTIONS_PAGED } from './mock-subscriptions.data';
 
 const MOCK_DELAY_MS = 400;
@@ -45,6 +46,20 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
     return respond({ ...plan, ...req.body as object });
   }
   if (method === 'DELETE' && path.match(/\/plans\/.+/)) return respond(null);
+
+  // Products
+  if (method === 'GET' && path.startsWith('/products') && !path.match(/\/products\/.+/)) return respond(MOCK_PRODUCTS);
+  if (method === 'GET' && path.match(/\/products\/.+/)) {
+    const id = path.split('/').pop();
+    return respond(MOCK_PRODUCTS.find(p => p.id === id) ?? null);
+  }
+  if (method === 'POST' && path === '/products') return respond({ ...req.body as object, id: String(Date.now()), createdAt: new Date().toISOString() });
+  if (method === 'PUT' && path.match(/\/products\/.+/)) {
+    const id = path.split('/')[2];
+    const product = MOCK_PRODUCTS.find(p => p.id === id);
+    return respond({ ...product, ...req.body as object });
+  }
+  if (method === 'DELETE' && path.match(/\/products\/.+/)) return respond(null);
 
   // Subscriptions
   if (method === 'GET' && path.startsWith('/subscriptions') && !path.match(/\/subscriptions\/.+/)) {
