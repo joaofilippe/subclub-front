@@ -59,11 +59,11 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
         </mat-form-field>
         
         <div class="filters__view-controls">
-          <mat-icon matTooltip="Cards Menores" class="slider-icon">grid_view</mat-icon>
-          <mat-slider min="200" max="1000" step="10" class="view-slider" color="primary">
+          <mat-icon matTooltip="Lista Detalhada" class="slider-icon">table_rows</mat-icon>
+          <mat-slider min="1" max="5" step="1" discrete class="view-slider" color="primary">
             <input matSliderThumb [(ngModel)]="zoomValue">
           </mat-slider>
-          <mat-icon matTooltip="Cards Maiores / Lista" class="slider-icon">view_list</mat-icon>
+          <mat-icon matTooltip="Cards Grandes" class="slider-icon">grid_view</mat-icon>
         </div>
       </div>
 
@@ -78,7 +78,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
       } @else {
         
         @if (viewMode === 'cards') {
-          <div class="cards-grid" [style.grid-template-columns]="'repeat(auto-fill, minmax(' + zoomValue + 'px, 1fr))'">
+          <div class="cards-grid" [style.grid-template-columns]="'repeat(auto-fill, minmax(' + cardWidth + 'px, 1fr))'">
             @for (product of vm.filtered(); track product.id) {
               <div class="product-card" [class.product-card--inactive]="!product.active">
                 @if (product.imageUrl) {
@@ -271,12 +271,21 @@ export class ProductListComponent implements OnInit {
   categoryFilterValue: string = 'all';
   activeFilterValue: 'all' | 'active' | 'inactive' = 'all';
 
-  zoomValue = 300;
+  zoomValue = 4; // default: 4 = card médio
 
   get viewMode(): 'list' | 'detailed' | 'cards' {
-    if (this.zoomValue >= 900) return 'detailed';
-    if (this.zoomValue >= 700) return 'list';
+    if (this.zoomValue === 1) return 'detailed';
+    if (this.zoomValue === 2) return 'list';
     return 'cards';
+  }
+
+  get cardWidth(): number {
+    switch (this.zoomValue) {
+      case 3: return 200; // pequeno
+      case 4: return 300; // médio
+      case 5: return 400; // grande
+      default: return 300;
+    }
   }
 
   ngOnInit(): void {
