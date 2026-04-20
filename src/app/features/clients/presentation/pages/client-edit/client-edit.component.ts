@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
-import { CepMaskDirective } from '../../../../../shared/directives/cep-mask.directive';
+import { CepMaskDirective } from '../../../../../shared/directives';
 import { ClientEditViewModel } from './client-edit.viewmodel';
 
 @Component({
