@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSliderModule } from '@angular/material/slider';
 import { ProductListViewModel } from './product-list.viewmodel';
 import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
 
@@ -19,7 +20,8 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
   imports: [
     RouterLink, FormsModule, CurrencyPipe,
     MatButtonModule, MatIconModule, MatInputModule,
-    MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule, MatTooltipModule
+    MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule, MatTooltipModule,
+    MatSliderModule
   ],
   template: `
     <div class="page">
@@ -55,6 +57,15 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
             <mat-option value="inactive">Inativos</mat-option>
           </mat-select>
         </mat-form-field>
+        
+        <div class="filters__view-controls">
+          <mat-icon matTooltip="Lista Detalhada" class="slider-icon">table_rows</mat-icon>
+          <mat-slider min="1" max="5" step="1" class="view-slider" color="primary">
+            <input matSliderThumb [(ngModel)]="zoomValue">
+          </mat-slider>
+          <mat-icon matTooltip="Cards Grandes" class="slider-icon">grid_view</mat-icon>
+          <div class="view-mode-badge">{{ formatSliderLabel(zoomValue) }}</div>
+        </div>
       </div>
 
       @if (vm.loading()) {
@@ -66,42 +77,117 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
           <a mat-flat-button color="primary" routerLink="/products/new">Criar primeiro produto</a>
         </div>
       } @else {
-        <div class="cards-grid">
-          @for (product of vm.filtered(); track product.id) {
-            <div class="product-card" [class.product-card--inactive]="!product.active">
-              @if (product.imageUrl) {
-                <img [src]="product.imageUrl" [alt]="product.name" class="product-card__image" />
-              } @else {
-                <div class="product-card__image product-card__image--placeholder">
-                  <mat-icon>inventory_2</mat-icon>
+        
+        @if (viewMode === 'cards') {
+          <div class="cards-grid" [style.grid-template-columns]="'repeat(auto-fill, minmax(' + cardWidth + 'px, 1fr))'">
+            @for (product of vm.filtered(); track product.id) {
+              <div class="product-card" [class.product-card--inactive]="!product.active">
+                @if (product.imageUrl) {
+                  <img [src]="product.imageUrl" [alt]="product.name" class="product-card__image" />
+                } @else {
+                  <div class="product-card__image product-card__image--placeholder">
+                    <mat-icon>inventory_2</mat-icon>
+                  </div>
+                }
+                <div class="product-card__body">
+                  <div class="product-card__header">
+                    <h3 class="product-card__name">{{ product.name }}</h3>
+                    <span class="badge" [class.badge--active]="product.active" [class.badge--inactive]="!product.active">
+                      {{ product.active ? 'Ativo' : 'Inativo' }}
+                    </span>
+                  </div>
+                  <p class="product-card__description">{{ product.description }}</p>
+                  <div class="product-card__footer">
+                    <div class="product-card__meta">
+                      <span class="category-chip">{{ categoryLabel(product.category) }}</span>
+                      <span class="product-card__price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
+                    </div>
+                    <div class="product-card__actions">
+                      <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
+                        <mat-icon>edit</mat-icon>
+                      </a>
+                      <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
+                        <mat-icon>delete_outline</mat-icon>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              }
-              <div class="product-card__body">
-                <div class="product-card__header">
-                  <h3 class="product-card__name">{{ product.name }}</h3>
+              </div>
+            }
+          </div>
+        } @else if (viewMode === 'list') {
+          <div class="simple-list">
+            @for (product of vm.filtered(); track product.id) {
+              <div class="simple-list-item" [class.simple-list-item--inactive]="!product.active">
+                <div class="simple-list-item__info">
+                  <h3 class="simple-list-item__name">{{ product.name }}</h3>
+                </div>
+                <div class="simple-list-item__meta">
+                  <span class="category-chip">{{ categoryLabel(product.category) }}</span>
+                  <span class="badge" [class.badge--active]="product.active" [class.badge--inactive]="!product.active">
+                    {{ product.active ? 'Ativo' : 'Inativo' }}
+                  </span>
+                  <span class="simple-list-item__price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
+                </div>
+                <div class="simple-list-item__actions">
+                  <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                  <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="detailed-list">
+            <div class="detailed-list-header">
+              <div class="detailed-cell detailed-cell--image">Imagem</div>
+              <div class="detailed-cell detailed-cell--name">Nome</div>
+              <div class="detailed-cell detailed-cell--category">Categoria</div>
+              <div class="detailed-cell detailed-cell--status">Status</div>
+              <div class="detailed-cell detailed-cell--price">Preço</div>
+              <div class="detailed-cell detailed-cell--actions">Ações</div>
+            </div>
+            @for (product of vm.filtered(); track product.id) {
+              <div class="detailed-list-row" [class.detailed-list-row--inactive]="!product.active">
+                <div class="detailed-cell detailed-cell--image">
+                  @if (product.imageUrl) {
+                    <img [src]="product.imageUrl" [alt]="product.name" class="detailed-image" />
+                  } @else {
+                    <div class="detailed-image detailed-image--placeholder">
+                      <mat-icon>inventory_2</mat-icon>
+                    </div>
+                  }
+                </div>
+                <div class="detailed-cell detailed-cell--name">
+                  <div class="detailed-name">{{ product.name }}</div>
+                  <div class="detailed-description">{{ product.description }}</div>
+                </div>
+                <div class="detailed-cell detailed-cell--category">
+                   <span class="category-chip">{{ categoryLabel(product.category) }}</span>
+                </div>
+                <div class="detailed-cell detailed-cell--status">
                   <span class="badge" [class.badge--active]="product.active" [class.badge--inactive]="!product.active">
                     {{ product.active ? 'Ativo' : 'Inativo' }}
                   </span>
                 </div>
-                <p class="product-card__description">{{ product.description }}</p>
-                <div class="product-card__footer">
-                  <div class="product-card__meta">
-                    <span class="category-chip">{{ categoryLabel(product.category) }}</span>
-                    <span class="product-card__price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
-                  </div>
-                  <div class="product-card__actions">
-                    <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
-                      <mat-icon>edit</mat-icon>
-                    </a>
-                    <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
-                      <mat-icon>delete_outline</mat-icon>
-                    </button>
-                  </div>
+                <div class="detailed-cell detailed-cell--price">
+                   <div class="detailed-price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</div>
+                </div>
+                <div class="detailed-cell detailed-cell--actions">
+                  <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                  <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
                 </div>
               </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       }
     </div>
   `,
@@ -110,12 +196,16 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     .page__header { display: flex; align-items: center; justify-content: space-between; }
     .page__title { font-size: 22px; font-weight: 700; margin: 0; }
 
-    .filters { display: flex; gap: 16px; flex-wrap: wrap; }
+    .filters { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
     .filters__search { flex: 1; min-width: 200px; }
     .filters__category { width: 180px; }
     .filters__status { width: 160px; }
+    .filters__view-controls { display: flex; gap: 8px; align-items: center; margin-left: auto; height: 56px; background: #fff; padding: 0 16px; border-radius: 99px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .view-slider { width: 160px; }
+    .slider-icon { color: #666; font-size: 20px; width: 20px; height: 20px; }
+    .view-mode-badge { display: inline-block; padding: 4px 12px; background: #f0eeff; color: #6750a4; border-radius: 99px; font-size: 13px; font-weight: 600; min-width: 80px; text-align: center; margin-left: 8px; transition: all 0.2s; }
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .cards-grid { display: grid; gap: 20px; }
 
     .product-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
     .product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
@@ -134,6 +224,39 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     .product-card__price { font-size: 16px; font-weight: 700; color: #6750a4; }
     .product-card__actions { display: flex; gap: 4px; }
 
+    /* Simple List */
+    .simple-list { display: flex; flex-direction: column; gap: 8px; }
+    .simple-list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .simple-list-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .simple-list-item--inactive { opacity: 0.65; }
+    .simple-list-item__info { flex: 1; }
+    .simple-list-item__name { font-size: 16px; font-weight: 500; margin: 0; }
+    .simple-list-item__meta { display: flex; align-items: center; gap: 16px; margin-right: 16px; }
+    .simple-list-item__price { font-weight: 600; color: #6750a4; }
+    .simple-list-item__actions { display: flex; gap: 4px; }
+
+    /* Detailed List */
+    .detailed-list { display: flex; flex-direction: column; background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden; }
+    .detailed-list-header { display: flex; align-items: center; padding: 12px 16px; background: #f8f9fa; border-bottom: 1px solid #eee; font-weight: 600; font-size: 13px; color: #555; }
+    .detailed-list-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+    .detailed-list-row:last-child { border-bottom: none; }
+    .detailed-list-row:hover { background: #fcfcfc; }
+    .detailed-list-row--inactive { opacity: 0.65; }
+    
+    .detailed-cell { display: flex; flex-direction: column; padding: 0 8px; }
+    .detailed-cell--image { width: 80px; }
+    .detailed-cell--name { flex: 1; min-width: 200px; }
+    .detailed-cell--category { width: 140px; }
+    .detailed-cell--status { width: 100px; }
+    .detailed-cell--price { width: 100px; }
+    .detailed-cell--actions { width: 100px; align-items: flex-end; }
+
+    .detailed-image { width: 64px; height: 48px; border-radius: 6px; object-fit: cover; }
+    .detailed-image--placeholder { display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #bbb; mat-icon { font-size: 24px; width: 24px; height: 24px; } }
+    .detailed-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .detailed-description { font-size: 13px; color: #666; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .detailed-price { font-weight: 700; color: #6750a4; }
+
     .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; white-space: nowrap; }
     .badge--active { background: #e8f5e9; color: #2e7d32; }
     .badge--inactive { background: #f5f5f5; color: #777; }
@@ -149,6 +272,34 @@ export class ProductListComponent implements OnInit {
   searchTermValue = '';
   categoryFilterValue: string = 'all';
   activeFilterValue: 'all' | 'active' | 'inactive' = 'all';
+
+  zoomValue = 4; // default: 4 = card médio
+
+  get viewMode(): 'list' | 'detailed' | 'cards' {
+    if (this.zoomValue === 1) return 'detailed';
+    if (this.zoomValue === 2) return 'list';
+    return 'cards';
+  }
+
+  get cardWidth(): number {
+    switch (this.zoomValue) {
+      case 3: return 200; // pequeno
+      case 4: return 300; // médio
+      case 5: return 400; // grande
+      default: return 300;
+    }
+  }
+
+  formatSliderLabel(value: number): string {
+    switch (value) {
+      case 1: return 'Detalhada';
+      case 2: return 'Lista';
+      case 3: return 'Pequeno';
+      case 4: return 'Médio';
+      case 5: return 'Grande';
+      default: return '';
+    }
+  }
 
   ngOnInit(): void {
     this.vm.load();
