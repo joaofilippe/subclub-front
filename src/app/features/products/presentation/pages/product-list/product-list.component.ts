@@ -60,10 +60,11 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
         
         <div class="filters__view-controls">
           <mat-icon matTooltip="Lista Detalhada" class="slider-icon">table_rows</mat-icon>
-          <mat-slider min="1" max="5" step="1" discrete class="view-slider" color="primary">
+          <mat-slider min="1" max="5" step="1" class="view-slider" color="primary">
             <input matSliderThumb [(ngModel)]="zoomValue">
           </mat-slider>
           <mat-icon matTooltip="Cards Grandes" class="slider-icon">grid_view</mat-icon>
+          <div class="view-mode-badge">{{ formatSliderLabel(zoomValue) }}</div>
         </div>
       </div>
 
@@ -202,6 +203,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     .filters__view-controls { display: flex; gap: 8px; align-items: center; margin-left: auto; height: 56px; background: #fff; padding: 0 16px; border-radius: 99px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .view-slider { width: 160px; }
     .slider-icon { color: #666; font-size: 20px; width: 20px; height: 20px; }
+    .view-mode-badge { display: inline-block; padding: 4px 12px; background: #f0eeff; color: #6750a4; border-radius: 99px; font-size: 13px; font-weight: 600; min-width: 80px; text-align: center; margin-left: 8px; transition: all 0.2s; }
 
     .cards-grid { display: grid; gap: 20px; }
 
@@ -285,6 +287,17 @@ export class ProductListComponent implements OnInit {
       case 4: return 300; // médio
       case 5: return 400; // grande
       default: return 300;
+    }
+  }
+
+  formatSliderLabel(value: number): string {
+    switch (value) {
+      case 1: return 'Detalhada';
+      case 2: return 'Lista';
+      case 3: return 'Pequeno';
+      case 4: return 'Médio';
+      case 5: return 'Grande';
+      default: return '';
     }
   }
 
