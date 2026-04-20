@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CurrencyPipe } from '@angular/common';
+import { SlicePipe, UpperCasePipe, CurrencyPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -18,7 +18,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
   standalone: true,
   providers: [ProductListViewModel],
   imports: [
-    RouterLink, FormsModule, CurrencyPipe,
+    RouterLink, FormsModule, CurrencyPipe, SlicePipe, UpperCasePipe,
     MatButtonModule, MatIconModule, MatInputModule,
     MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule, MatTooltipModule,
     MatSliderModule
@@ -143,6 +143,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
         } @else {
           <div class="detailed-list">
             <div class="detailed-list-header">
+              <div class="detailed-cell detailed-cell--code">Código</div>
               <div class="detailed-cell detailed-cell--image">Imagem</div>
               <div class="detailed-cell detailed-cell--name">Nome</div>
               <div class="detailed-cell detailed-cell--category">Categoria</div>
@@ -152,6 +153,9 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
             </div>
             @for (product of vm.filtered(); track product.id) {
               <div class="detailed-list-row" [class.detailed-list-row--inactive]="!product.active">
+                <div class="detailed-cell detailed-cell--code" [matTooltip]="product.id">
+                  <span class="product-code-tag">#{{ product.id | slice:0:6 | uppercase }}</span>
+                </div>
                 <div class="detailed-cell detailed-cell--image">
                   @if (product.imageUrl) {
                     <img [src]="product.imageUrl" [alt]="product.name" class="detailed-image" />
@@ -244,6 +248,7 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     .detailed-list-row--inactive { opacity: 0.65; }
     
     .detailed-cell { display: flex; flex-direction: column; padding: 0 8px; }
+    .detailed-cell--code { width: 90px; }
     .detailed-cell--image { width: 80px; }
     .detailed-cell--name { flex: 1; min-width: 200px; }
     .detailed-cell--category { width: 140px; }
@@ -260,6 +265,8 @@ import { PRODUCT_CATEGORIES } from '../../../domain/models/product.model';
     .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; white-space: nowrap; }
     .badge--active { background: #e8f5e9; color: #2e7d32; }
     .badge--inactive { background: #f5f5f5; color: #777; }
+
+    .product-code-tag { font-family: monospace; font-size: 13px; font-weight: 500; color: #666; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; }
 
     .category-chip { display: inline-block; padding: 2px 8px; background: #f0eeff; color: #6750a4; border-radius: 99px; font-size: 11px; font-weight: 500; }
 
