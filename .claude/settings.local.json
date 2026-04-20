@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ng version *)",
+      "Read(//c/projects/angular/**)",
+      "Bash(ng new *)"
+    ]
+  }
+}
