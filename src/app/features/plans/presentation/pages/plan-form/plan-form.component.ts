@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
+import { BrlCurrencyDirective } from '../../../../../shared/directives';
 import { PlanFormViewModel } from './plan-form.viewmodel';
 
 const INTERVAL_PRESETS = [
@@ -36,6 +37,7 @@ const INTERVAL_PRESETS = [
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    BrlCurrencyDirective,
   ],
   template: `
     <div class="page">
@@ -114,9 +116,9 @@ const INTERVAL_PRESETS = [
                   <span matPrefix class="prefix">R$</span>
                   <input
                     matInput
-                    type="number"
-                    min="0"
-                    step="0.01"
+                    type="text"
+                    inputmode="decimal"
+                    brlCurrency
                     formControlName="productValue"
                   />
                   @if (
@@ -138,9 +140,9 @@ const INTERVAL_PRESETS = [
                   <span matPrefix class="prefix">R$</span>
                   <input
                     matInput
-                    type="number"
-                    min="0"
-                    step="0.01"
+                    type="text"
+                    inputmode="decimal"
+                    brlCurrency
                     formControlName="discountValue"
                   />
                   @if (
