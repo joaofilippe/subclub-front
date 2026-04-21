@@ -1,0 +1,149 @@
+<div class="page">
+  <div class="page__header">
+    <a mat-icon-button routerLink="/plans">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1 class="page__title">{{ id() ? 'Editar Plano' : 'Novo Plano' }}</h1>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="40" />
+    </div>
+  } @else {
+    <form [formGroup]="vm.form" (ngSubmit)="vm.save(id())" class="form">
+      <div class="form-section">
+        <h2 class="form-section__title">Identificação</h2>
+        <mat-divider />
+        <div class="form-section__body">
+          <div class="field-row">
+            <mat-form-field appearance="outline" class="field-row__field">
+              <mat-label>Nome do plano</mat-label>
+              <input matInput formControlName="name" />
+              @if (vm.form.get('name')?.invalid && vm.form.get('name')?.touched) {
+                <mat-error>Nome é obrigatório</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-slide-toggle formControlName="active" color="primary" class="active-toggle">
+              Plano ativo
+            </mat-slide-toggle>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Descrição</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+            @if (vm.form.get('description')?.invalid && vm.form.get('description')?.touched) {
+              <mat-error>Descrição é obrigatória</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>URL da imagem</mat-label>
+            <input matInput formControlName="imageUrl" placeholder="https://..." />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section__title">Precificação</h2>
+        <mat-divider />
+        <div class="form-section__body">
+          <div class="field-row">
+            <mat-form-field appearance="outline" class="field-row__field">
+              <mat-label>Valor dos produtos (R$)</mat-label>
+              <span matPrefix class="prefix">R$</span>
+              <input matInput type="text" inputmode="decimal" brlCurrency formControlName="productValue" />
+              @if (vm.form.get('productValue')?.hasError('required') && vm.form.get('productValue')?.touched) {
+                <mat-error>Valor obrigatório</mat-error>
+              } @else if (vm.form.get('productValue')?.hasError('min') && vm.form.get('productValue')?.touched) {
+                <mat-error>Deve ser maior que zero</mat-error>
+              }
+              <mat-hint>Valor de mercado dos itens da caixa</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-row__field">
+              <mat-label>Desconto para assinante (R$)</mat-label>
+              <span matPrefix class="prefix">R$</span>
+              <input matInput type="text" inputmode="decimal" brlCurrency formControlName="discountValue" />
+              @if (vm.form.get('discountValue')?.hasError('discountExceedsProduct') && vm.form.get('discountValue')?.touched) {
+                <mat-error>Desconto não pode ser maior que o valor dos produtos</mat-error>
+              } @else if (vm.form.get('discountValue')?.hasError('min') && vm.form.get('discountValue')?.touched) {
+                <mat-error>Deve ser zero ou maior</mat-error>
+              }
+              <mat-hint>Economia oferecida ao assinante</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="price-preview">
+            <div class="price-preview__item">
+              <span class="price-preview__label">Valor dos produtos</span>
+              <span class="price-preview__value">{{ vm.form.get('productValue')?.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="price-preview__item price-preview__item--discount">
+              <span class="price-preview__label">
+                Desconto
+                @if (vm.discountPercent() > 0) {
+                  <span class="discount-badge">{{ vm.discountPercent() | number:'1.0-1' }}% off</span>
+                }
+              </span>
+              <span class="price-preview__value price-preview__value--discount">
+                − {{ vm.form.get('discountValue')?.value | currency:'BRL':'symbol':'1.2-2' }}
+              </span>
+            </div>
+            <mat-divider />
+            <div class="price-preview__item price-preview__item--total">
+              <span class="price-preview__label">Assinante paga</span>
+              <span class="price-preview__value price-preview__value--total">{{ vm.finalPrice() | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section__title">Entrega</h2>
+        <mat-divider />
+        <div class="form-section__body">
+          <p class="field-label">Intervalo entre entregas</p>
+          <div class="interval-presets">
+            @for (preset of presets; track preset.value) {
+              <button
+                type="button"
+                class="preset-btn"
+                [class.preset-btn--active]="vm.form.get('intervalDays')?.value === preset.value"
+                (click)="vm.form.get('intervalDays')?.setValue(preset.value)"
+              >
+                {{ preset.label }}
+              </button>
+            }
+          </div>
+
+          <mat-form-field appearance="outline" style="width:180px">
+            <mat-label>Personalizado (dias)</mat-label>
+            <input matInput type="number" min="1" formControlName="intervalDays" />
+            @if (vm.form.get('intervalDays')?.hasError('min') && vm.form.get('intervalDays')?.touched) {
+              <mat-error>Mínimo 1 dia</mat-error>
+            }
+            <mat-hint>Ou digite um valor personalizado</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      @if (vm.error()) {
+        <p class="form-error">{{ vm.error() }}</p>
+      }
+
+      <div class="form-actions">
+        <a mat-stroked-button routerLink="/plans">Cancelar</a>
+        <button mat-flat-button color="primary" type="submit" [disabled]="vm.saving()">
+          @if (vm.saving()) {
+            <mat-progress-spinner mode="indeterminate" diameter="18" />
+          } @else {
+            <mat-icon>save</mat-icon>
+          }
+          Salvar
+        </button>
+      </div>
+    </form>
+  }
+</div>

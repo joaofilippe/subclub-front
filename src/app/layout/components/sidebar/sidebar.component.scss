@@ -1,0 +1,41 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.sidebar {
+  width: 240px;
+  background: #1e1e2e;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  flex: 1;
+}
+
+.sidebar__brand {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 0 24px 24px;
+}
+
+.sidebar__nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #ccc;
+  text-decoration: none;
+
+  &:hover,
+  &.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

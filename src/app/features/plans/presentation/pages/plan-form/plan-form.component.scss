@@ -1,0 +1,179 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 40px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 20px;
+  color: #444;
+}
+
+.form-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 28px;
+}
+
+.field-row {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.field-row__field {
+  flex: 1;
+  min-width: 220px;
+}
+
+.active-toggle {
+  align-self: center;
+  margin-top: 4px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.prefix {
+  margin: 0 0.03rem 0 1rem;
+}
+
+.price-preview {
+  background: #f8f5ff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-preview__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-preview__item--discount .price-preview__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-preview__item--total {
+  margin-top: 4px;
+}
+
+.price-preview__label {
+  font-size: 13px;
+  color: #666;
+}
+
+.price-preview__value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.price-preview__value--discount {
+  color: #2e7d32;
+}
+
+.price-preview__value--total {
+  font-size: 20px;
+  font-weight: 700;
+  color: #6750a4;
+}
+
+.discount-badge {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.field-label {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+.interval-presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: #6750a4;
+    color: #6750a4;
+  }
+}
+
+.preset-btn--active {
+  border-color: #6750a4;
+  background: #6750a4;
+  color: #fff;
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.form-error {
+  color: #c62828;
+  font-size: 13px;
+  margin: 0;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+}

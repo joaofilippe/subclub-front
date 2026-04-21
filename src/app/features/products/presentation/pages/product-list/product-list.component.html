@@ -1,0 +1,169 @@
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">Produtos</h1>
+    <a mat-flat-button color="primary" routerLink="/products/new">
+      <mat-icon>add</mat-icon> Novo produto
+    </a>
+  </div>
+
+  <div class="filters">
+    <mat-form-field appearance="outline" class="filters__search">
+      <mat-label>Buscar produto</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [(ngModel)]="searchTermValue" (ngModelChange)="vm.searchTerm.set($event)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filters__category">
+      <mat-label>Categoria</mat-label>
+      <mat-select [(ngModel)]="categoryFilterValue" (ngModelChange)="vm.categoryFilter.set($event)">
+        <mat-option value="all">Todas</mat-option>
+        @for (cat of categories; track cat.value) {
+          <mat-option [value]="cat.value">{{ cat.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filters__status">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="activeFilterValue" (ngModelChange)="vm.activeFilter.set($event)">
+        <mat-option value="all">Todos</mat-option>
+        <mat-option value="active">Ativos</mat-option>
+        <mat-option value="inactive">Inativos</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="filters__view-controls">
+      <mat-icon matTooltip="Lista Detalhada" class="slider-icon">table_rows</mat-icon>
+      <mat-slider min="1" max="5" step="1" class="view-slider" color="primary">
+        <input matSliderThumb [(ngModel)]="zoomValue">
+      </mat-slider>
+      <mat-icon matTooltip="Cards Grandes" class="slider-icon">grid_view</mat-icon>
+      <div class="view-mode-badge">{{ formatSliderLabel(zoomValue) }}</div>
+    </div>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading"><mat-progress-spinner mode="indeterminate" diameter="40" /></div>
+  } @else if (vm.isEmpty()) {
+    <div class="empty">
+      <mat-icon>inventory_2</mat-icon>
+      <p>Nenhum produto cadastrado</p>
+      <a mat-flat-button color="primary" routerLink="/products/new">Criar primeiro produto</a>
+    </div>
+  } @else {
+    @if (viewMode === 'cards') {
+      <div class="cards-grid" [style.grid-template-columns]="'repeat(auto-fill, minmax(' + cardWidth + 'px, 1fr))'">
+        @for (product of vm.filtered(); track product.id) {
+          <div class="product-card" [class.product-card--inactive]="!product.active">
+            @if (product.imageUrl) {
+              <img [src]="product.imageUrl" [alt]="product.name" class="product-card__image" />
+            } @else {
+              <div class="product-card__image product-card__image--placeholder">
+                <mat-icon>inventory_2</mat-icon>
+              </div>
+            }
+            <div class="product-card__body">
+              <div class="product-card__header">
+                <h3 class="product-card__name">{{ product.name }}</h3>
+                <span class="badge" [class.badge--active]="product.active" [class.badge--inactive]="!product.active">
+                  {{ product.active ? 'Ativo' : 'Inativo' }}
+                </span>
+              </div>
+              <p class="product-card__description">{{ product.description }}</p>
+              <div class="product-card__footer">
+                <div class="product-card__meta">
+                  <span class="category-chip">{{ categoryLabel(product.category) }}</span>
+                  <span class="product-card__price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
+                </div>
+                <div class="product-card__actions">
+                  <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                  <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if (viewMode === 'list') {
+      <div class="simple-list">
+        @for (product of vm.filtered(); track product.id) {
+          <div class="simple-list-item" [class.simple-list-item--inactive]="!product.active">
+            <div class="simple-list-item__info">
+              <h3 class="simple-list-item__name">{{ product.name }}</h3>
+            </div>
+            <div class="simple-list-item__meta">
+              <span class="category-chip">{{ categoryLabel(product.category) }}</span>
+              <span class="badge" [class.badge--active]="product.active" [class.badge--inactive]="!product.active">
+                {{ product.active ? 'Ativo' : 'Inativo' }}
+              </span>
+              <span class="simple-list-item__price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="simple-list-item__actions">
+              <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="detailed-list">
+        <div class="detailed-list-header">
+          <div class="detailed-cell detailed-cell--code">Código</div>
+          <div class="detailed-cell detailed-cell--image">Imagem</div>
+          <div class="detailed-cell detailed-cell--name">Nome</div>
+          <div class="detailed-cell detailed-cell--category">Categoria</div>
+          <div class="detailed-cell detailed-cell--status">Status</div>
+          <div class="detailed-cell detailed-cell--price">Preço</div>
+          <div class="detailed-cell detailed-cell--actions">Ações</div>
+        </div>
+        @for (product of vm.filtered(); track product.id) {
+          <div class="detailed-list-row" [class.detailed-list-row--inactive]="!product.active">
+            <div class="detailed-cell detailed-cell--code" [matTooltip]="product.id">
+              <span class="product-code-tag">#{{ product.id | slice:0:6 | uppercase }}</span>
+            </div>
+            <div class="detailed-cell detailed-cell--image">
+              @if (product.imageUrl) {
+                <img [src]="product.imageUrl" [alt]="product.name" class="detailed-image" />
+              } @else {
+                <div class="detailed-image detailed-image--placeholder">
+                  <mat-icon>inventory_2</mat-icon>
+                </div>
+              }
+            </div>
+            <div class="detailed-cell detailed-cell--name">
+              <div class="detailed-name">{{ product.name }}</div>
+              <div class="detailed-description">{{ product.description }}</div>
+            </div>
+            <div class="detailed-cell detailed-cell--category">
+              <span class="category-chip">{{ categoryLabel(product.category) }}</span>
+            </div>
+            <div class="detailed-cell detailed-cell--status">
+              <span class="badge" [class.badge--active]="product.active" [class.badge--inactive]="!product.active">
+                {{ product.active ? 'Ativo' : 'Inativo' }}
+              </span>
+            </div>
+            <div class="detailed-cell detailed-cell--price">
+              <div class="detailed-price">{{ product.costPrice | currency:'BRL':'symbol':'1.2-2' }}</div>
+            </div>
+            <div class="detailed-cell detailed-cell--actions">
+              <a mat-icon-button [routerLink]="['/products', product.id, 'edit']" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <button mat-icon-button color="warn" (click)="vm.delete(product.id)" matTooltip="Excluir">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

@@ -7,21 +7,7 @@ import { HeaderComponent } from '../components/header/header.component';
   selector: 'app-shell',
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, HeaderComponent],
-  template: `
-    <div class="shell">
-      <app-sidebar />
-      <div class="shell__main">
-        <app-header />
-        <main class="shell__content">
-          <router-outlet />
-        </main>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .shell { display: flex; height: 100vh; overflow: hidden; }
-    .shell__main { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
-    .shell__content { flex: 1; overflow-y: auto; padding: 24px; }
-  `]
+  templateUrl: './shell.component.html',
+  styleUrl: './shell.component.scss'
 })
 export class ShellComponent {}
