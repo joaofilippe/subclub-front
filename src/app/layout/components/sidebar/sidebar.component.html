@@ -1,0 +1,13 @@
+<nav class="sidebar">
+  <div class="sidebar__brand">SubClub</div>
+  <ul class="sidebar__nav">
+    @for (item of navItems; track item.route) {
+      <li>
+        <a [routerLink]="item.route" routerLinkActive="active" class="sidebar__link">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

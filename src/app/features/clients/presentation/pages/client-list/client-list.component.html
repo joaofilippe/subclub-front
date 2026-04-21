@@ -1,0 +1,86 @@
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">Clientes</h1>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-card__value">{{ vm.counts().total }}</span>
+      <span class="stat-card__label">Total</span>
+    </div>
+    <div class="stat-card stat-card--active">
+      <span class="stat-card__value">{{ vm.counts().active }}</span>
+      <span class="stat-card__label">Ativos</span>
+    </div>
+    <div class="stat-card stat-card--inactive">
+      <span class="stat-card__value">{{ vm.counts().inactive }}</span>
+      <span class="stat-card__label">Inativos</span>
+    </div>
+  </div>
+
+  <div class="filters">
+    <mat-form-field appearance="outline" class="filters__search">
+      <mat-label>Buscar por nome ou e-mail</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [(ngModel)]="searchTermValue" (ngModelChange)="vm.searchTerm.set($event)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filters__status">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="activeFilterValue" (ngModelChange)="vm.activeFilter.set($event)">
+        <mat-option value="all">Todos</mat-option>
+        <mat-option value="active">Ativos</mat-option>
+        <mat-option value="inactive">Inativos</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading"><mat-progress-spinner mode="indeterminate" diameter="40" /></div>
+  } @else if (vm.isEmpty()) {
+    <div class="empty">
+      <mat-icon>people_outline</mat-icon>
+      <p>Nenhum cliente encontrado</p>
+    </div>
+  } @else {
+    <div class="table-container">
+      <table mat-table [dataSource]="vm.filtered()">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nome</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>E-mail</th>
+          <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Telefone</th>
+          <td mat-cell *matCellDef="let row">{{ row.phone }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="badge" [class.badge--active]="row.active" [class.badge--inactive]="!row.active">
+              {{ row.active ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <a mat-icon-button [routerLink]="['/clients', row.id]" matTooltip="Ver detalhes">
+              <mat-icon>chevron_right</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns" class="table-row"></tr>
+      </table>
+    </div>
+  }
+</div>

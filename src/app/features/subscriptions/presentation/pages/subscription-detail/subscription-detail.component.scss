@@ -1,0 +1,94 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.detail-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.detail-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: #444;
+}
+
+.detail-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-row__label {
+  font-size: 13px;
+  color: #777;
+}
+
+.detail-row__value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge--active { background: #e8f5e9; color: #2e7d32; }
+.badge--paused { background: #fff3e0; color: #f57c00; }
+.badge--cancelled { background: #fdecea; color: #c62828; }
+.badge--expired { background: #f5f5f5; color: #555; }
+.badge--shipment-pending { background: #f5f5f5; color: #555; }
+.badge--shipment-preparing { background: #e3f2fd; color: #1565c0; }
+.badge--shipment-shipped { background: #ede7f6; color: #4527a0; }
+.badge--shipment-delivered { background: #e8f5e9; color: #2e7d32; }
+
+.text-warning {
+  color: #f57c00;
+  font-weight: 600;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+}

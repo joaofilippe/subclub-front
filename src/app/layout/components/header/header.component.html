@@ -1,0 +1,9 @@
+<header class="header">
+  <div class="header__spacer"></div>
+  <div class="header__user">
+    <span>{{ store.user()?.name }}</span>
+    <button mat-icon-button (click)="store.logout()" title="Sair">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</header>
