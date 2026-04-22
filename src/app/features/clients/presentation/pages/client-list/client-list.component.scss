@@ -23,14 +23,14 @@
 }
 
 .stat-card {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-  border-left: 4px solid #ccc;
+  box-shadow: var(--shadow-card);
+  border-left: 4px solid var(--border-color);
 }
 
 .stat-card__value {
@@ -40,22 +40,22 @@
 
 .stat-card__label {
   font-size: 13px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .stat-card--active {
-  border-color: #2e7d32;
+  border-color: var(--color-success);
 
   .stat-card__value {
-    color: #2e7d32;
+    color: var(--color-success);
   }
 }
 
 .stat-card--inactive {
-  border-color: #c62828;
+  border-color: var(--color-error);
 
   .stat-card__value {
-    color: #c62828;
+    color: var(--color-error);
   }
 }
 
@@ -73,9 +73,9 @@
 }
 
 .table-container {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
@@ -84,7 +84,7 @@ table {
 }
 
 .table-row:hover {
-  background: #f9f9f9;
+  background: var(--bg-hover);
   cursor: pointer;
 }
 
@@ -96,8 +96,8 @@ table {
   font-weight: 500;
 }
 
-.badge--active { background: #e8f5e9; color: #2e7d32; }
-.badge--inactive { background: #fdecea; color: #c62828; }
+.badge--active { background: var(--color-success-bg); color: var(--color-success); }
+.badge--inactive { background: var(--color-error-bg); color: var(--color-error); }
 
 .loading,
 .empty {
@@ -107,7 +107,7 @@ table {
   justify-content: center;
   padding: 64px;
   gap: 12px;
-  color: #999;
+  color: var(--text-muted);
 
   mat-icon {
     font-size: 48px;

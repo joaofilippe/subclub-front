@@ -38,10 +38,10 @@
   align-items: center;
   margin-left: auto;
   height: 56px;
-  background: #fff;
+  background: var(--bg-surface);
   padding: 0 16px;
   border-radius: 99px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
 }
 
 .view-slider {
@@ -49,7 +49,7 @@
 }
 
 .slider-icon {
-  color: #666;
+  color: var(--text-muted);
   font-size: 20px;
   width: 20px;
   height: 20px;
@@ -58,8 +58,8 @@
 .view-mode-badge {
   display: inline-block;
   padding: 4px 12px;
-  background: #f0eeff;
-  color: #6750a4;
+  background: var(--bg-primary-tint);
+  color: var(--color-primary);
   border-radius: 99px;
   font-size: 13px;
   font-weight: 600;
@@ -75,16 +75,16 @@
 }
 
 .plan-card {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: box-shadow 0.2s;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-card-hover);
   }
 }
 
@@ -102,8 +102,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  color: #bbb;
+  background: var(--bg-placeholder);
+  color: var(--text-muted);
 
   mat-icon {
     font-size: 48px;
@@ -135,7 +135,7 @@
 
 .plan-card__description {
   font-size: 13px;
-  color: #666;
+  color: var(--text-muted);
   margin: 0;
   line-height: 1.5;
   flex: 1;
@@ -156,12 +156,12 @@
 .plan-card__price-value {
   font-size: 18px;
   font-weight: 700;
-  color: #6750a4;
+  color: var(--color-primary);
 }
 
 .plan-card__price-interval {
   font-size: 11px;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .plan-card__actions {
@@ -180,12 +180,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-card);
 
   &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-card-hover);
   }
 }
 
@@ -212,7 +212,7 @@
 
 .simple-list-item__price {
   font-weight: 600;
-  color: #6750a4;
+  color: var(--color-primary);
 }
 
 .simple-list-item__actions {
@@ -223,9 +223,9 @@
 .detailed-list {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
@@ -233,18 +233,18 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #eee;
+  background: var(--bg-surface-alt);
+  border-bottom: 1px solid var(--border-color);
   font-weight: 600;
   font-size: 13px;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .detailed-list-row {
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-color);
   transition: background 0.2s;
 
   &:last-child {
@@ -252,7 +252,7 @@
   }
 
   &:hover {
-    background: #fcfcfc;
+    background: var(--bg-hover);
   }
 }
 
@@ -283,8 +283,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  color: #bbb;
+  background: var(--bg-placeholder);
+  color: var(--text-muted);
 
   mat-icon {
     font-size: 24px;
@@ -301,7 +301,7 @@
 
 .detailed-description {
   font-size: 13px;
-  color: #666;
+  color: var(--text-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -310,12 +310,12 @@
 
 .detailed-price {
   font-weight: 700;
-  color: #6750a4;
+  color: var(--color-primary);
 }
 
 .detailed-interval {
   font-size: 12px;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .badge {
@@ -327,8 +327,8 @@
   white-space: nowrap;
 }
 
-.badge--active { background: #e8f5e9; color: #2e7d32; }
-.badge--inactive { background: #f5f5f5; color: #777; }
+.badge--active { background: var(--color-success-bg); color: var(--color-success); }
+.badge--inactive { background: var(--color-neutral-bg); color: var(--color-neutral); }
 
 .loading,
 .empty {
@@ -338,7 +338,7 @@
   justify-content: center;
   padding: 64px;
   gap: 12px;
-  color: #999;
+  color: var(--text-muted);
 
   mat-icon {
     font-size: 48px;

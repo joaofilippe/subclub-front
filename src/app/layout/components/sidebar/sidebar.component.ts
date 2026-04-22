@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { ThemeService } from '../../../core/theme.service';
 
 interface NavItem {
   label: string;
@@ -16,6 +17,8 @@ interface NavItem {
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+  themeService = inject(ThemeService);
+
   navItems: NavItem[] = [
     { label: 'Assinaturas', icon: 'subscriptions', route: '/subscriptions' },
     { label: 'Clientes', icon: 'people', route: '/clients' },

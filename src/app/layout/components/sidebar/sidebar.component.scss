@@ -5,12 +5,13 @@
 
 .sidebar {
   width: 240px;
-  background: #1e1e2e;
-  color: #fff;
+  background: var(--sidebar-bg);
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   padding: 16px 0;
   flex: 1;
+  border-right: 1px solid var(--sidebar-divider);
 }
 
 .sidebar__brand {
@@ -30,12 +31,39 @@
   align-items: center;
   gap: 12px;
   padding: 12px 24px;
-  color: #ccc;
+  color: var(--sidebar-link-color);
   text-decoration: none;
+  transition: background 0.15s, color 0.15s;
 
   &:hover,
   &.active {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    background: var(--sidebar-hover-bg);
+  }
+}
+
+.sidebar__footer {
+  margin-top: auto;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--sidebar-divider);
+}
+
+.sidebar__theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--sidebar-link-color);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--sidebar-hover-bg);
   }
 }

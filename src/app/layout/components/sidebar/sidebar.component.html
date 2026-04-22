@@ -10,4 +10,11 @@
       </li>
     }
   </ul>
+
+  <div class="sidebar__footer">
+    <button type="button" class="sidebar__theme-toggle" (click)="themeService.toggle()">
+      <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      <span>{{ themeService.isDark() ? 'Light mode' : 'Dark mode' }}</span>
+    </button>
+  </div>
 </nav>

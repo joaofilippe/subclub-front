@@ -23,23 +23,23 @@
 }
 
 .stat-card {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   border-left: 4px solid transparent;
 }
 
 .stat-card__value { font-size: 28px; font-weight: 700; }
-.stat-card__label { font-size: 13px; color: #666; }
+.stat-card__label { font-size: 13px; color: var(--text-muted); }
 
-.stat-card--active { border-color: #2e7d32; .stat-card__value { color: #2e7d32; } }
-.stat-card--paused { border-color: #f57c00; .stat-card__value { color: #f57c00; } }
-.stat-card--cancelled { border-color: #c62828; .stat-card__value { color: #c62828; } }
-.stat-card--expired { border-color: #555; .stat-card__value { color: #555; } }
+.stat-card--active { border-color: var(--color-success); .stat-card__value { color: var(--color-success); } }
+.stat-card--paused { border-color: var(--color-warning); .stat-card__value { color: var(--color-warning); } }
+.stat-card--cancelled { border-color: var(--color-error); .stat-card__value { color: var(--color-error); } }
+.stat-card--expired { border-color: var(--text-muted); .stat-card__value { color: var(--text-muted); } }
 
 .filters {
   display: flex;
@@ -50,16 +50,16 @@
 .filters__status { width: 200px; }
 
 .table-container {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
 table { width: 100%; }
 
 .table-row:hover {
-  background: #f9f9f9;
+  background: var(--bg-hover);
   cursor: pointer;
 }
 
@@ -71,16 +71,16 @@ table { width: 100%; }
   font-weight: 500;
 }
 
-.badge--active { background: #e8f5e9; color: #2e7d32; }
-.badge--paused { background: #fff3e0; color: #f57c00; }
-.badge--cancelled { background: #fdecea; color: #c62828; }
-.badge--expired { background: #f5f5f5; color: #555; }
-.badge--shipment-pending { background: #f5f5f5; color: #555; }
-.badge--shipment-preparing { background: #e3f2fd; color: #1565c0; }
-.badge--shipment-shipped { background: #ede7f6; color: #4527a0; }
-.badge--shipment-delivered { background: #e8f5e9; color: #2e7d32; }
+.badge--active { background: var(--color-success-bg); color: var(--color-success); }
+.badge--paused { background: var(--color-warning-bg); color: var(--color-warning); }
+.badge--cancelled { background: var(--color-error-bg); color: var(--color-error); }
+.badge--expired { background: var(--color-neutral-bg); color: var(--text-muted); }
+.badge--shipment-pending { background: var(--color-neutral-bg); color: var(--text-muted); }
+.badge--shipment-preparing { background: var(--color-info-bg); color: var(--color-info); }
+.badge--shipment-shipped { background: var(--color-shipment-shipped-bg); color: var(--color-shipment-shipped); }
+.badge--shipment-delivered { background: var(--color-success-bg); color: var(--color-success); }
 
-.text-warning { color: #f57c00; font-weight: 600; }
+.text-warning { color: var(--color-warning); font-weight: 600; }
 
 .loading,
 .empty {
@@ -90,7 +90,7 @@ table { width: 100%; }
   justify-content: center;
   padding: 64px;
   gap: 12px;
-  color: #999;
+  color: var(--text-muted);
 
   mat-icon {
     font-size: 48px;

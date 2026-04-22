@@ -23,10 +23,10 @@
 }
 
 .form-section {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
   padding: 32px 40px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
 }
@@ -35,7 +35,7 @@
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 20px;
-  color: #444;
+  color: var(--text-secondary);
 }
 
 .form-section__body {
@@ -72,7 +72,7 @@ mat-form-field {
 }
 
 .price-preview {
-  background: #f8f5ff;
+  background: var(--bg-price-preview);
   border-radius: 10px;
   padding: 16px 20px;
   display: flex;
@@ -98,7 +98,7 @@ mat-form-field {
 
 .price-preview__label {
   font-size: 13px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .price-preview__value {
@@ -107,18 +107,18 @@ mat-form-field {
 }
 
 .price-preview__value--discount {
-  color: #2e7d32;
+  color: var(--color-success);
 }
 
 .price-preview__value--total {
   font-size: 20px;
   font-weight: 700;
-  color: #6750a4;
+  color: var(--color-primary);
 }
 
 .discount-badge {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--color-success-bg);
+  color: var(--color-success);
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
@@ -127,7 +127,7 @@ mat-form-field {
 
 .field-label {
   font-size: 13px;
-  color: #555;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -140,22 +140,23 @@ mat-form-field {
 .preset-btn {
   padding: 6px 16px;
   border-radius: 99px;
-  border: 1px solid #ccc;
-  background: #fff;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
   font-size: 13px;
   cursor: pointer;
   transition: all 0.15s;
 
   &:hover {
-    border-color: #6750a4;
-    color: #6750a4;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 }
 
 .preset-btn--active {
-  border-color: #6750a4;
-  background: #6750a4;
-  color: #fff;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #1a1a2e;
   font-weight: 500;
 }
 
@@ -166,7 +167,7 @@ mat-form-field {
 }
 
 .form-error {
-  color: #c62828;
+  color: var(--color-error);
   font-size: 13px;
   margin: 0;
 }
