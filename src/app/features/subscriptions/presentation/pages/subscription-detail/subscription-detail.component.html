@@ -16,7 +16,7 @@
         <div class="detail-card__body">
           <div class="detail-row">
             <span class="detail-row__label">Cliente</span>
-            <span class="detail-row__value">{{ vm.subscription()!.clientName }}</span>
+            <span class="detail-row__value">{{ vm.subscription()!.customerName }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-row__label">Plano</span>
@@ -35,17 +35,17 @@
         <div class="detail-card__body">
           <div class="detail-row">
             <span class="detail-row__label">Assinatura</span>
-            <span class="badge badge--{{ vm.subscription()!.status }}">{{ statusLabel(vm.subscription()!.status) }}</span>
+            <span class="badge badge--{{ vm.subscription()!.status | lowercase }}">{{ statusLabel(vm.subscription()!.status) }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-row__label">Envio</span>
-            <span class="badge badge--shipment-{{ vm.subscription()!.shipmentStatus }}">{{ shipmentLabel(vm.subscription()!.shipmentStatus) }}</span>
+            <span class="badge badge--shipment-{{ vm.subscription()!.shipmentStatus | lowercase }}">{{ shipmentLabel(vm.subscription()!.shipmentStatus) }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-row__label">Próx. cobrança</span>
-            <span class="detail-row__value" [class.text-warning]="vm.subscription()!.daysUntilRenewal <= 7 && vm.subscription()!.status === 'active'">
+            <span class="detail-row__value" [class.text-warning]="vm.subscription()!.daysUntilRenewal <= 7 && vm.subscription()!.status === 'ACTIVE'">
               {{ vm.subscription()!.nextBillingDate | date:'dd/MM/yyyy' }}
-              @if (vm.subscription()!.status === 'active') {
+              @if (vm.subscription()!.status === 'ACTIVE') {
                 <small>({{ vm.subscription()!.daysUntilRenewal }}d)</small>
               }
             </span>
@@ -64,7 +64,7 @@
           <mat-icon>pause</mat-icon> Pausar assinatura
         </button>
       }
-      @if (vm.subscription()!.status === 'paused') {
+      @if (vm.subscription()!.status === 'PAUSED') {
         <button mat-stroked-button color="primary" (click)="vm.resume(vm.subscription()!.id)">
           <mat-icon>play_arrow</mat-icon> Retomar assinatura
         </button>

@@ -20,14 +20,14 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
   if (method === 'POST' && path === '/auth/login') return respond(MOCK_AUTH_RESPONSE);
   if (method === 'POST' && path === '/auth/register') return respond({ message: 'Conta criada com sucesso' });
 
-  // Clients
-  if (method === 'GET' && path.startsWith('/clients') && !path.match(/\/clients\/.+/)) return respond(MOCK_CLIENTS_PAGED);
-  if (method === 'GET' && path.match(/\/clients\/.+/)) {
+  // Customers
+  if (method === 'GET' && path.startsWith('/customers') && !path.match(/\/customers\/.+/)) return respond(MOCK_CLIENTS_PAGED);
+  if (method === 'GET' && path.match(/\/customers\/.+/)) {
     const id = path.split('/').pop();
     return respond(MOCK_CLIENTS.find(c => c.id === id) ?? null);
   }
-  if (method === 'POST' && path === '/clients') return respond({ ...req.body as object, id: String(Date.now()), createdAt: new Date().toISOString() });
-  if ((method === 'PUT' || method === 'PATCH') && path.match(/\/clients\/.+/)) {
+  if (method === 'POST' && path === '/customers') return respond({ ...req.body as object, id: String(Date.now()), createdAt: new Date().toISOString() });
+  if ((method === 'PUT' || method === 'PATCH') && path.match(/\/customers\/.+/)) {
     const id = path.split('/')[2];
     const client = MOCK_CLIENTS.find(c => c.id === id);
     return respond({ ...client, ...req.body as object });
@@ -63,8 +63,8 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Subscriptions
   if (method === 'GET' && path.startsWith('/subscriptions') && !path.match(/\/subscriptions\/.+/)) {
-    const clientId = req.params.get('clientId');
-    const data = clientId ? MOCK_SUBSCRIPTIONS.filter(s => s.clientId === clientId) : MOCK_SUBSCRIPTIONS;
+    const customerId = req.params.get('customerId');
+    const data = customerId ? MOCK_SUBSCRIPTIONS.filter(s => s.customerId === customerId) : MOCK_SUBSCRIPTIONS;
     return respond({ data, pagination: { page: 1, pageSize: 10, total: data.length } });
   }
   if (method === 'GET' && path.match(/\/subscriptions\/.+/)) {

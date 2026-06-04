@@ -3,6 +3,7 @@ import { Plan } from '../../features/plans/domain/models/plan.model';
 export const MOCK_PLANS: Plan[] = [
   {
     id: '1',
+    code: 'BASICO',
     name: 'Plano Básico',
     description: 'Receba todo mês uma seleção especial de produtos artesanais.',
     productValue: 120.00,
@@ -15,6 +16,7 @@ export const MOCK_PLANS: Plan[] = [
   },
   {
     id: '2',
+    code: 'PREMIUM',
     name: 'Plano Premium',
     description: 'Produtos exclusivos e embalagem especial entregues mensalmente.',
     productValue: 200.00,
@@ -27,6 +29,7 @@ export const MOCK_PLANS: Plan[] = [
   },
   {
     id: '3',
+    code: 'TRIMESTRAL',
     name: 'Plano Trimestral',
     description: 'A melhor experiência com envio a cada 3 meses.',
     productValue: 500.00,
@@ -39,6 +42,7 @@ export const MOCK_PLANS: Plan[] = [
   },
   {
     id: '4',
+    code: 'LEGADO',
     name: 'Plano Legado',
     description: 'Plano descontinuado.',
     productValue: 80.00,

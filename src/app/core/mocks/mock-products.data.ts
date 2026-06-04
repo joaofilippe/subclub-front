@@ -3,6 +3,7 @@ import { Product } from '../../features/products/domain/models/product.model';
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: '1',
+    code: 'MEL-001',
     name: 'Mel Orgânico',
     description: 'Mel puro produzido por abelhas nativas, sem aditivos.',
     costPrice: 25.00,
@@ -13,6 +14,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '2',
+    code: 'CAFE-001',
     name: 'Café Especial Arábica',
     description: 'Grãos selecionados de altitude, torra média.',
     costPrice: 35.00,
@@ -23,6 +25,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '3',
+    code: 'CREME-001',
     name: 'Creme Hidratante Natural',
     description: 'Hidratante facial com ingredientes naturais e veganos.',
     costPrice: 42.00,
@@ -33,6 +36,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '4',
+    code: 'CAM-001',
     name: 'Camiseta Algodão Orgânico',
     description: 'Confeccionada com algodão 100% orgânico e tingimento natural.',
     costPrice: 55.00,
@@ -43,6 +47,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '5',
+    code: 'VELA-001',
     name: 'Vela Aromática Lavanda',
     description: 'Vela artesanal de cera de soja com essência de lavanda.',
     costPrice: 30.00,
@@ -53,6 +58,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '6',
+    code: 'GRA-001',
     name: 'Granola Artesanal',
     description: 'Mix de grãos, frutas secas e sementes, sem açúcar refinado.',
     costPrice: 18.00,

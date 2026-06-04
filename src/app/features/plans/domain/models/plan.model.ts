@@ -1,5 +1,6 @@
 export interface Plan {
   id: string;
+  code: string;
   name: string;
   description: string;
   productValue: number;
