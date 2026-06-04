@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { LowerCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -18,7 +19,7 @@ import { SubscriptionStatus } from '../../../domain/models/subscription.model';
   standalone: true,
   providers: [SubscriptionListViewModel],
   imports: [
-    RouterLink, FormsModule,
+    LowerCasePipe, RouterLink, FormsModule,
     MatTableModule, MatButtonModule, MatIconModule, MatInputModule,
     MatFormFieldModule, MatSelectModule, MatChipsModule,
     MatProgressSpinnerModule, MatTooltipModule
@@ -38,14 +39,14 @@ export class SubscriptionListComponent implements OnInit {
 
   statusLabel(status: SubscriptionStatus): string {
     const labels: Record<SubscriptionStatus, string> = {
-      active: 'Ativa', paused: 'Pausada', cancelled: 'Cancelada', expired: 'Expirada'
+      ACTIVE: 'Ativa', PAUSED: 'Pausada', CANCELLED: 'Cancelada', EXPIRED: 'Expirada'
     };
     return labels[status];
   }
 
   shipmentLabel(status: string): string {
     const labels: Record<string, string> = {
-      pending: 'Pendente', preparing: 'Preparando', shipped: 'Enviado', delivered: 'Entregue'
+      PENDING: 'Pendente', PREPARING: 'Preparando', SHIPPED: 'Enviado', DELIVERED: 'Entregue'
     };
     return labels[status] ?? status;
   }

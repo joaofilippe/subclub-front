@@ -14,6 +14,7 @@ export class ProductFormViewModel {
   readonly error = signal<string | null>(null);
 
   readonly form = this.fb.group({
+    code:        ['', Validators.required],
     name:        ['', Validators.required],
     description: ['', Validators.required],
     costPrice:   [0, [Validators.required, Validators.min(0.01)]],
@@ -27,6 +28,7 @@ export class ProductFormViewModel {
     this.service.getById(id).subscribe({
       next: product => {
         this.form.patchValue({
+          code:        product.code,
           name:        product.name,
           description: product.description,
           costPrice:   product.costPrice,

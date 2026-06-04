@@ -1,10 +1,10 @@
-export type SubscriptionStatus = 'active' | 'paused' | 'cancelled' | 'expired';
-export type ShipmentStatus = 'pending' | 'preparing' | 'shipped' | 'delivered';
+export type SubscriptionStatus = 'ACTIVE' | 'PAUSED' | 'CANCELLED' | 'EXPIRED';
+export type ShipmentStatus = 'PENDING' | 'PREPARING' | 'SHIPPED' | 'DELIVERED';
 
 export interface Subscription {
   id: string;
-  clientId: string;
-  clientName: string;
+  customerId: string;
+  customerName: string;
   planId: string;
   planName: string;
   status: SubscriptionStatus;
@@ -19,7 +19,7 @@ export interface Subscription {
 export interface SubscriptionFilter {
   search?: string;
   status?: SubscriptionStatus;
-  clientId?: string;
+  customerId?: string;
   page?: number;
   pageSize?: number;
 }

@@ -19,7 +19,7 @@ export class ClientDetailViewModel {
   load(id: string): void {
     this.clientStore.loadOne(id);
     this._loadingSubs.set(true);
-    this.subscriptionService.getAll({ clientId: id }).subscribe({
+    this.subscriptionService.getAll({ customerId: id }).subscribe({
       next: res => {
         this._subscriptions.set(res.data);
         this._loadingSubs.set(false);

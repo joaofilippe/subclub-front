@@ -21,6 +21,7 @@ export class PlanFormViewModel {
   readonly error = signal<string | null>(null);
 
   readonly form = this.fb.group({
+    code:         ['', Validators.required],
     name:         ['', Validators.required],
     description:  ['', Validators.required],
     imageUrl:     [''],
@@ -52,6 +53,7 @@ export class PlanFormViewModel {
     this.service.getById(id).subscribe({
       next: plan => {
         this.form.patchValue({
+          code: plan.code,
           name: plan.name,
           description: plan.description,
           imageUrl: plan.imageUrl ?? '',

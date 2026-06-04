@@ -18,6 +18,14 @@
         <mat-divider />
         <div class="form-section__body">
           <div class="field-row">
+            <mat-form-field appearance="outline" class="field--code">
+              <mat-label>Código</mat-label>
+              <input matInput formControlName="code" placeholder="Ex: CAFE-001" />
+              @if (vm.form.get('code')?.invalid && vm.form.get('code')?.touched) {
+                <mat-error>Código é obrigatório</mat-error>
+              }
+            </mat-form-field>
+
             <mat-form-field appearance="outline" class="field-row__field">
               <mat-label>Nome do produto</mat-label>
               <input matInput formControlName="name" />

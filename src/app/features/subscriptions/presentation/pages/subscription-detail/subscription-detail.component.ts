@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, input } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, LowerCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,7 @@ import { canCancelSubscription, canPauseSubscription } from '../../../domain/rul
   selector: 'app-subscription-detail',
   standalone: true,
   providers: [SubscriptionDetailViewModel],
-  imports: [DatePipe, RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatDividerModule],
+  imports: [DatePipe, LowerCasePipe, RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatDividerModule],
   templateUrl: './subscription-detail.component.html',
   styleUrl: './subscription-detail.component.scss'
 })
@@ -28,12 +28,12 @@ export class SubscriptionDetailComponent implements OnInit {
   canPause = canPauseSubscription;
 
   statusLabel(status: string): string {
-    const labels: Record<string, string> = { active: 'Ativa', paused: 'Pausada', cancelled: 'Cancelada', expired: 'Expirada' };
+    const labels: Record<string, string> = { ACTIVE: 'Ativa', PAUSED: 'Pausada', CANCELLED: 'Cancelada', EXPIRED: 'Expirada' };
     return labels[status] ?? status;
   }
 
   shipmentLabel(status: string): string {
-    const labels: Record<string, string> = { pending: 'Pendente', preparing: 'Preparando', shipped: 'Enviado', delivered: 'Entregue' };
+    const labels: Record<string, string> = { PENDING: 'Pendente', PREPARING: 'Preparando', SHIPPED: 'Enviado', DELIVERED: 'Entregue' };
     return labels[status] ?? status;
   }
 }

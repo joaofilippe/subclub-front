@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\projects\\\\angular\\\\subclub-front\" -Directory)",
+      "Bash(Select-Object Name)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\projects\\\\angular\\\\subclub-front\" | Where-Object { $_.PSIsContainer } | Select-Object Name)",
+      "PowerShell(tree -L 3 \"c:\\\\projects\\\\angular\\\\subclub-front\\\\src\\\\app\" -I node_modules)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

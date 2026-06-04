@@ -18,7 +18,7 @@ export class SubscriptionListViewModel {
     const term = this.searchTerm().toLowerCase();
     const status = this.statusFilter();
     return this.subscriptions().filter(s => {
-      const matchesSearch = !term || s.clientName.toLowerCase().includes(term) || s.planName.toLowerCase().includes(term);
+      const matchesSearch = !term || s.customerName.toLowerCase().includes(term) || s.planName.toLowerCase().includes(term);
       const matchesStatus = !status || s.status === status;
       return matchesSearch && matchesStatus;
     });
@@ -27,10 +27,10 @@ export class SubscriptionListViewModel {
   readonly statusCounts = computed(() => {
     const all = this.subscriptions();
     return {
-      active: all.filter(s => s.status === 'active').length,
-      paused: all.filter(s => s.status === 'paused').length,
-      cancelled: all.filter(s => s.status === 'cancelled').length,
-      expired: all.filter(s => s.status === 'expired').length,
+      active: all.filter(s => s.status === 'ACTIVE').length,
+      paused: all.filter(s => s.status === 'PAUSED').length,
+      cancelled: all.filter(s => s.status === 'CANCELLED').length,
+      expired: all.filter(s => s.status === 'EXPIRED').length,
     };
   });
 
