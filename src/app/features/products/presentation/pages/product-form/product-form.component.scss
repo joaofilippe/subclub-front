@@ -23,10 +23,10 @@
 }
 
 .form-section {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
   padding: 32px 40px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
 }
@@ -35,7 +35,7 @@
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 20px;
-  color: #444;
+  color: var(--text-secondary);
 }
 
 .form-section__body {
@@ -78,7 +78,7 @@ mat-form-field {
 }
 
 .form-error {
-  color: #c62828;
+  color: var(--color-error);
   font-size: 13px;
   margin: 0;
 }

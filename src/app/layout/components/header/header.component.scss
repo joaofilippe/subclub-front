@@ -3,8 +3,8 @@
   align-items: center;
   padding: 0 24px;
   height: 64px;
-  border-bottom: 1px solid #e0e0e0;
-  background: #fff;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-surface);
 }
 
 .header__spacer {

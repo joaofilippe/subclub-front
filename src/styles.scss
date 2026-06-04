@@ -2,7 +2,18 @@
 
 @include mat.core();
 
-$theme: mat.define-theme((
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$violet-palette,
+  ),
+  typography: (
+    brand-family: 'Inter, sans-serif',
+    plain-family: 'Inter, sans-serif',
+  ),
+));
+
+$light-theme: mat.define-theme((
   color: (
     theme-type: light,
     primary: mat.$violet-palette,
@@ -13,8 +24,76 @@ $theme: mat.define-theme((
   ),
 ));
 
-:root {
-  @include mat.all-component-themes($theme);
+body.dark-theme {
+  @include mat.all-component-themes($dark-theme);
+
+  --bg-page: #0f0f17;
+  --bg-surface: #1a1a2e;
+  --bg-surface-alt: #16213e;
+  --bg-hover: #22223a;
+  --bg-placeholder: #252535;
+  --bg-primary-tint: #2a2045;
+  --bg-price-preview: #1e1730;
+  --border-color: #2a2a3f;
+  --text-primary: #e8e8f0;
+  --text-secondary: #a0a0b8;
+  --text-muted: #6b6b85;
+  --color-primary: #bb86fc;
+  --color-error: #ef9a9a;
+  --color-error-bg: #3d1414;
+  --color-success: #66bb6a;
+  --color-success-bg: #1b3a1e;
+  --color-warning: #ffb74d;
+  --color-warning-bg: #3d2600;
+  --color-info: #64b5f6;
+  --color-info-bg: #0d2744;
+  --color-neutral: #9e9eb8;
+  --color-neutral-bg: #252535;
+  --color-shipment-shipped: #b39ddb;
+  --color-shipment-shipped-bg: #1e1040;
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  --sidebar-bg: #12121e;
+  --sidebar-link-color: rgba(255, 255, 255, 0.55);
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.08);
+  --sidebar-divider: rgba(255, 255, 255, 0.08);
+}
+
+body.light-theme {
+  @include mat.all-component-themes($light-theme);
+
+  --bg-page: #f5f5f5;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #f8f9fa;
+  --bg-hover: #f4f4f8;
+  --bg-placeholder: #f0f0f0;
+  --bg-primary-tint: #f0eeff;
+  --bg-price-preview: #f8f5ff;
+  --border-color: #e0e0e0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --color-primary: #6750a4;
+  --color-error: #c62828;
+  --color-error-bg: #fdecea;
+  --color-success: #2e7d32;
+  --color-success-bg: #e8f5e9;
+  --color-warning: #f57c00;
+  --color-warning-bg: #fff3e0;
+  --color-info: #1565c0;
+  --color-info-bg: #e3f2fd;
+  --color-neutral: #777777;
+  --color-neutral-bg: #f5f5f5;
+  --color-shipment-shipped: #4527a0;
+  --color-shipment-shipped-bg: #ede7f6;
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.07);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  --sidebar-bg: #ffffff;
+  --sidebar-link-color: #666666;
+  --sidebar-hover-bg: rgba(0, 0, 0, 0.05);
+  --sidebar-divider: #e0e0e0;
 }
 
 *, *::before, *::after {
@@ -25,6 +104,6 @@ html, body {
   height: 100%;
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: #f5f5f5;
-  color: #1a1a1a;
+  background: var(--bg-page);
+  color: var(--text-primary);
 }
