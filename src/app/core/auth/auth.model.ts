@@ -3,17 +3,25 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: AuthUser;
-}
+export type UserRole = 'admin' | 'operations';
+export type UserType = 'individual' | 'corporate' | 'system';
 
 export interface AuthUser {
   id: string;
   name: string;
   email: string;
   role: UserRole;
+  type: UserType;
+  accountSlug: string;
 }
 
-export type UserRole = 'admin' | 'client';
+export interface JwtClaims {
+  sub: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  type: UserType;
+  account_slug: string;
+  exp: number;
+  iat: number;
+}

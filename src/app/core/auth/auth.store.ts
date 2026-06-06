@@ -1,14 +1,14 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { AuthUser, LoginRequest } from './auth.model';
+import { LoginRequest } from './auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  private _user = signal<AuthUser | null>(null);
+  private _user = signal(this.authService.getCurrentUser());
   private _loading = signal(false);
   private _error = signal<string | null>(null);
 
@@ -17,14 +17,16 @@ export class AuthStore {
   readonly error = this._error.asReadonly();
   readonly isAuthenticated = computed(() => !!this._user());
   readonly isAdmin = computed(() => this._user()?.role === 'admin');
+  readonly isOperations = computed(() => this._user()?.role === 'operations');
+  readonly accountSlug = computed(() => this._user()?.accountSlug ?? '');
 
   login(credentials: LoginRequest): void {
     this._loading.set(true);
     this._error.set(null);
 
     this.authService.login(credentials).subscribe({
-      next: res => {
-        this._user.set(res.user);
+      next: user => {
+        this._user.set(user);
         this._loading.set(false);
         this.router.navigate(['/dashboard']);
       },
