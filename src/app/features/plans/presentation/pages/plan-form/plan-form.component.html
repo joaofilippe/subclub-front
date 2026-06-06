@@ -19,7 +19,7 @@
           <div class="field-row">
             <mat-form-field appearance="outline" class="field-row__field">
               <mat-label>Nome do plano</mat-label>
-              <input matInput formControlName="name" />
+              <input matInput formControlName="name" aria-label="Nome do plano" />
               @if (vm.form.get('name')?.invalid && vm.form.get('name')?.touched) {
                 <mat-error>Nome é obrigatório</mat-error>
               }
@@ -32,7 +32,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Descrição</mat-label>
-            <textarea matInput formControlName="description" rows="3"></textarea>
+            <textarea matInput formControlName="description" rows="3" aria-label="Descrição"></textarea>
             @if (vm.form.get('description')?.invalid && vm.form.get('description')?.touched) {
               <mat-error>Descrição é obrigatória</mat-error>
             }
@@ -53,7 +53,7 @@
             <mat-form-field appearance="outline" class="field-row__field">
               <mat-label>Valor dos produtos (R$)</mat-label>
               <span matPrefix class="prefix">R$</span>
-              <input matInput type="text" inputmode="decimal" brlCurrency formControlName="productValue" />
+              <input matInput type="text" inputmode="decimal" brlCurrency formControlName="productValue" aria-label="Valor dos produtos" />
               @if (vm.form.get('productValue')?.hasError('required') && vm.form.get('productValue')?.touched) {
                 <mat-error>Valor obrigatório</mat-error>
               } @else if (vm.form.get('productValue')?.hasError('min') && vm.form.get('productValue')?.touched) {
@@ -65,7 +65,7 @@
             <mat-form-field appearance="outline" class="field-row__field">
               <mat-label>Desconto para assinante (R$)</mat-label>
               <span matPrefix class="prefix">R$</span>
-              <input matInput type="text" inputmode="decimal" brlCurrency formControlName="discountValue" />
+              <input matInput type="text" inputmode="decimal" brlCurrency formControlName="discountValue" aria-label="Desconto para assinante" />
               @if (vm.form.get('discountValue')?.hasError('discountExceedsProduct') && vm.form.get('discountValue')?.touched) {
                 <mat-error>Desconto não pode ser maior que o valor dos produtos</mat-error>
               } @else if (vm.form.get('discountValue')?.hasError('min') && vm.form.get('discountValue')?.touched) {
@@ -118,9 +118,9 @@
             }
           </div>
 
-          <mat-form-field appearance="outline" style="width:180px">
+          <mat-form-field appearance="outline" class="interval-custom-field">
             <mat-label>Personalizado (dias)</mat-label>
-            <input matInput type="number" min="1" formControlName="intervalDays" />
+            <input matInput type="number" min="1" formControlName="intervalDays" aria-label="Personalizado (dias)" />
             @if (vm.form.get('intervalDays')?.hasError('min') && vm.form.get('intervalDays')?.touched) {
               <mat-error>Mínimo 1 dia</mat-error>
             }
