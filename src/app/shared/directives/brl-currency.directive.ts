@@ -29,8 +29,9 @@ export class BrlCurrencyDirective implements OnInit {
     this.formatDisplay();
   }
 
-  @HostListener('input', ['$event.target.value'])
-  onInput(raw: string): void {
+  @HostListener('input', ['$event'])
+  onInput(event: Event): void {
+    const raw = (event.target as HTMLInputElement).value;
     this.userTyping = true;
     const digits = raw.replace(/[^0-9,]/g, '');
     this.el.nativeElement.value = digits;

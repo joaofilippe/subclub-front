@@ -1,0 +1,80 @@
+<div class="page">
+  <div class="page__header">
+    <a mat-icon-button routerLink="/account-plans" matTooltip="Voltar"><mat-icon>arrow_back</mat-icon></a>
+    <h1 class="page__title">{{ id() ? 'Editar plano de conta' : 'Novo plano de conta' }}</h1>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading"><mat-progress-spinner mode="indeterminate" diameter="40" /></div>
+  } @else {
+    <div class="card">
+      <form [formGroup]="vm.form" (ngSubmit)="vm.save(id())" class="form">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome do plano</mat-label>
+          <input matInput formControlName="name" aria-label="Nome do plano" />
+          @if (vm.form.get('name')?.hasError('required') && vm.form.get('name')?.touched) {
+            <mat-error>Nome é obrigatório</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput formControlName="description" rows="2" aria-label="Descrição"></textarea>
+          @if (vm.form.get('description')?.hasError('required') && vm.form.get('description')?.touched) {
+            <mat-error>Descrição é obrigatória</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Preço mensal (R$)</mat-label>
+          <span matPrefix>R$&nbsp;</span>
+          <input matInput type="text" inputmode="decimal" brlCurrency formControlName="price" aria-label="Preço mensal" />
+          @if (vm.form.get('price')?.hasError('min') && vm.form.get('price')?.touched) {
+            <mat-error>Deve ser maior que zero</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Máx. clientes</mat-label>
+            <input matInput type="number" min="1" formControlName="maxCustomers" aria-label="Máximo de clientes" />
+            @if (vm.form.get('maxCustomers')?.hasError('min') && vm.form.get('maxCustomers')?.touched) {
+              <mat-error>Mínimo 1</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Máx. planos</mat-label>
+            <input matInput type="number" min="1" formControlName="maxPlans" aria-label="Máximo de planos" />
+            @if (vm.form.get('maxPlans')?.hasError('min') && vm.form.get('maxPlans')?.touched) {
+              <mat-error>Mínimo 1</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Máx. produtos</mat-label>
+            <input matInput type="number" min="1" formControlName="maxProducts" aria-label="Máximo de produtos" />
+            @if (vm.form.get('maxProducts')?.hasError('min') && vm.form.get('maxProducts')?.touched) {
+              <mat-error>Mínimo 1</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-slide-toggle formControlName="active" color="primary">Plano ativo</mat-slide-toggle>
+
+        @if (vm.error()) {
+          <p class="feedback--error"><mat-icon>error_outline</mat-icon> {{ vm.error() }}</p>
+        }
+
+        <div class="form__actions">
+          <a mat-stroked-button routerLink="/account-plans">Cancelar</a>
+          <button mat-flat-button color="primary" type="submit" [disabled]="vm.form.invalid || vm.saving()">
+            @if (vm.saving()) { <mat-progress-spinner diameter="18" mode="indeterminate" /> }
+            @else { {{ id() ? 'Salvar' : 'Criar plano' }} }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

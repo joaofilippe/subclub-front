@@ -37,6 +37,11 @@ export class AuthStore {
     });
   }
 
+  updateUser(partial: Partial<import('./auth.model').AuthUser>): void {
+    const current = this._user();
+    if (current) this._user.set({ ...current, ...partial });
+  }
+
   logout(): void {
     this._user.set(null);
     this.authService.logout();

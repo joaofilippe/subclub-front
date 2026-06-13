@@ -1,0 +1,38 @@
+<div class="page">
+  <div class="page__header">
+    <a mat-icon-button routerLink="/modules" matTooltip="Voltar"><mat-icon>arrow_back</mat-icon></a>
+    <h1 class="page__title">{{ id() ? 'Editar módulo' : 'Novo módulo' }}</h1>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading"><mat-progress-spinner mode="indeterminate" diameter="40" /></div>
+  } @else {
+    <div class="card">
+      <form [formGroup]="vm.form" (ngSubmit)="vm.save(id())" class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome do módulo</mat-label>
+          <input matInput formControlName="name" aria-label="Nome do módulo" />
+          @if (vm.form.get('name')?.hasError('required') && vm.form.get('name')?.touched) {
+            <mat-error>Nome é obrigatório</mat-error>
+          }
+        </mat-form-field>
+
+        @if (id()) {
+          <mat-slide-toggle formControlName="active" color="primary">Módulo ativo</mat-slide-toggle>
+        }
+
+        @if (vm.error()) {
+          <p class="feedback--error"><mat-icon>error_outline</mat-icon> {{ vm.error() }}</p>
+        }
+
+        <div class="form__actions">
+          <a mat-stroked-button routerLink="/modules">Cancelar</a>
+          <button mat-flat-button color="primary" type="submit" [disabled]="vm.form.invalid || vm.saving()">
+            @if (vm.saving()) { <mat-progress-spinner diameter="18" mode="indeterminate" /> }
+            @else { {{ id() ? 'Salvar' : 'Criar módulo' }} }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

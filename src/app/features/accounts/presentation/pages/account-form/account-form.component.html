@@ -1,0 +1,99 @@
+<div class="page">
+  <div class="page__header">
+    <a mat-icon-button routerLink="/accounts" matTooltip="Voltar"><mat-icon>arrow_back</mat-icon></a>
+    <h1 class="page__title">{{ id() ? 'Editar conta' : 'Nova conta' }}</h1>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading"><mat-progress-spinner mode="indeterminate" diameter="40" /></div>
+  } @else {
+    <div class="card">
+      <form [formGroup]="vm.form" (ngSubmit)="vm.save(id())" class="form">
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nome da empresa</mat-label>
+            <input matInput formControlName="name" aria-label="Nome da empresa" />
+            @if (vm.form.get('name')?.hasError('required') && vm.form.get('name')?.touched) {
+              <mat-error>Nome é obrigatório</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email" type="email" aria-label="E-mail" />
+            @if (vm.form.get('email')?.hasError('required') && vm.form.get('email')?.touched) {
+              <mat-error>E-mail é obrigatório</mat-error>
+            } @else if (vm.form.get('email')?.hasError('email') && vm.form.get('email')?.touched) {
+              <mat-error>E-mail inválido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>CNPJ / Documento</mat-label>
+            <input matInput formControlName="document" aria-label="Documento" />
+            @if (vm.form.get('document')?.hasError('required') && vm.form.get('document')?.touched) {
+              <mat-error>Documento é obrigatório</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Slug</mat-label>
+            <input matInput formControlName="slug" aria-label="Slug" />
+            @if (vm.form.get('slug')?.hasError('required') && vm.form.get('slug')?.touched) {
+              <mat-error>Slug é obrigatório</mat-error>
+            }
+            @if (id()) { <mat-hint>O slug não pode ser alterado após a criação</mat-hint> }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Plano de conta</mat-label>
+          <mat-select formControlName="accountPlanId">
+            @for (plan of vm.accountPlans(); track plan.id) {
+              <mat-option [value]="plan.id">{{ plan.name }}</mat-option>
+            }
+          </mat-select>
+          @if (vm.form.get('accountPlanId')?.hasError('required') && vm.form.get('accountPlanId')?.touched) {
+            <mat-error>Plano é obrigatório</mat-error>
+          }
+        </mat-form-field>
+
+        @if (id()) {
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Status da assinatura</mat-label>
+              <mat-select formControlName="subscriptionStatus">
+                <mat-option value="active">Ativo</mat-option>
+                <mat-option value="inactive">Inativo</mat-option>
+                <mat-option value="cancelled">Cancelado</mat-option>
+                <mat-option value="suspended">Suspenso</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Vencimento da assinatura</mat-label>
+              <input matInput type="date" formControlName="subscriptionExpiresAt" aria-label="Vencimento" />
+            </mat-form-field>
+          </div>
+
+          <mat-slide-toggle formControlName="active" color="primary">Conta ativa</mat-slide-toggle>
+        }
+
+        @if (vm.error()) {
+          <p class="feedback--error"><mat-icon>error_outline</mat-icon> {{ vm.error() }}</p>
+        }
+
+        <div class="form__actions">
+          <a mat-stroked-button routerLink="/accounts">Cancelar</a>
+          <button mat-flat-button color="primary" type="submit" [disabled]="vm.form.invalid || vm.saving()">
+            @if (vm.saving()) { <mat-progress-spinner diameter="18" mode="indeterminate" /> }
+            @else { {{ id() ? 'Salvar' : 'Criar conta' }} }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

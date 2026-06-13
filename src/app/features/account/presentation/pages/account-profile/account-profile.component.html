@@ -1,0 +1,172 @@
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">Minha Conta</h1>
+  </div>
+
+  <div class="sections">
+
+    <!-- Perfil -->
+    <section class="card">
+      <div class="card__header">
+        <div class="avatar">{{ vm.user()?.name?.charAt(0)?.toUpperCase() }}</div>
+        <div>
+          <h2 class="card__title">Perfil</h2>
+          <p class="card__subtitle">Atualize seu nome e e-mail de acesso</p>
+        </div>
+      </div>
+
+      <form [formGroup]="vm.profileForm" (ngSubmit)="vm.updateProfile()" class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="name" />
+          @if (vm.profileForm.get('name')?.hasError('required')) {
+            <mat-error>Nome é obrigatório</mat-error>
+          } @else if (vm.profileForm.get('name')?.hasError('minlength')) {
+            <mat-error>Mínimo de 2 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" />
+          @if (vm.profileForm.get('email')?.hasError('required')) {
+            <mat-error>E-mail é obrigatório</mat-error>
+          } @else if (vm.profileForm.get('email')?.hasError('email')) {
+            <mat-error>E-mail inválido</mat-error>
+          }
+        </mat-form-field>
+
+        @if (vm.profileError()) {
+          <p class="feedback feedback--error">
+            <mat-icon>error_outline</mat-icon> {{ vm.profileError() }}
+          </p>
+        }
+
+        @if (vm.profileSuccess()) {
+          <p class="feedback feedback--success">
+            <mat-icon>check_circle_outline</mat-icon> Perfil atualizado com sucesso
+          </p>
+        }
+
+        <div class="form__actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="vm.profileForm.invalid || vm.profileLoading()">
+            @if (vm.profileLoading()) {
+              <mat-progress-spinner diameter="18" mode="indeterminate" />
+            } @else {
+              Salvar alterações
+            }
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Informações da conta -->
+    <section class="card">
+      <div class="card__header">
+        <div class="icon-box">
+          <mat-icon>business</mat-icon>
+        </div>
+        <div>
+          <h2 class="card__title">Informações da conta</h2>
+          <p class="card__subtitle">Dados vinculados ao seu acesso (somente leitura)</p>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-item__label">Perfil de acesso</span>
+          <span class="info-item__value">
+            <span class="badge" [class.badge--admin]="vm.user()?.role === 'admin'" [class.badge--ops]="vm.user()?.role === 'operations'">
+              {{ vm.roleLabel(vm.user()?.role) }}
+            </span>
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">Tipo de conta</span>
+          <span class="info-item__value">{{ vm.typeLabel(vm.user()?.type) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">Conta (slug)</span>
+          <span class="info-item__value info-item__value--mono">{{ vm.user()?.accountSlug }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-item__label">ID do usuário</span>
+          <span class="info-item__value info-item__value--mono">{{ vm.user()?.id }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Segurança -->
+    <section class="card">
+      <div class="card__header">
+        <div class="icon-box icon-box--security">
+          <mat-icon>lock</mat-icon>
+        </div>
+        <div>
+          <h2 class="card__title">Segurança</h2>
+          <p class="card__subtitle">Altere sua senha de acesso</p>
+        </div>
+      </div>
+
+      <form [formGroup]="vm.passwordForm" (ngSubmit)="vm.changePassword()" class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Senha atual</mat-label>
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <input matInput formControlName="currentPassword" type="password" />
+          @if (vm.passwordForm.get('currentPassword')?.hasError('required')) {
+            <mat-error>Senha atual é obrigatória</mat-error>
+          } @else if (vm.passwordForm.get('currentPassword')?.hasError('minlength')) {
+            <mat-error>Mínimo de 6 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nova senha</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput formControlName="newPassword" type="password" />
+          @if (vm.passwordForm.get('newPassword')?.hasError('required')) {
+            <mat-error>Nova senha é obrigatória</mat-error>
+          } @else if (vm.passwordForm.get('newPassword')?.hasError('minlength')) {
+            <mat-error>Mínimo de 6 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar nova senha</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput formControlName="confirmPassword" type="password" />
+          @if (vm.passwordForm.get('confirmPassword')?.hasError('required')) {
+            <mat-error>Confirmação é obrigatória</mat-error>
+          } @else if (vm.passwordForm.hasError('passwordMismatch') && vm.passwordForm.get('confirmPassword')?.touched) {
+            <mat-error>As senhas não coincidem</mat-error>
+          }
+        </mat-form-field>
+
+        @if (vm.passwordError()) {
+          <p class="feedback feedback--error">
+            <mat-icon>error_outline</mat-icon> {{ vm.passwordError() }}
+          </p>
+        }
+
+        @if (vm.passwordSuccess()) {
+          <p class="feedback feedback--success">
+            <mat-icon>check_circle_outline</mat-icon> Senha alterada com sucesso
+          </p>
+        }
+
+        <div class="form__actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="vm.passwordForm.invalid || vm.passwordLoading()">
+            @if (vm.passwordLoading()) {
+              <mat-progress-spinner diameter="18" mode="indeterminate" />
+            } @else {
+              Alterar senha
+            }
+          </button>
+        </div>
+      </form>
+    </section>
+
+  </div>
+</div>

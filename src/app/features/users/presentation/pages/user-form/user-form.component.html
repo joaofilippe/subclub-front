@@ -1,0 +1,96 @@
+<div class="page">
+  <div class="page__header">
+    <a mat-icon-button routerLink="/users" matTooltip="Voltar">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1 class="page__title">{{ id() ? 'Editar usuário' : 'Novo usuário' }}</h1>
+  </div>
+
+  @if (vm.loading()) {
+    <div class="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="40" />
+    </div>
+  } @else {
+    <div class="card">
+      <form [formGroup]="vm.form" (ngSubmit)="vm.save(id())" class="form">
+
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" aria-label="E-mail" />
+          @if (vm.form.get('email')?.hasError('required')) {
+            <mat-error>E-mail é obrigatório</mat-error>
+          } @else if (vm.form.get('email')?.hasError('email')) {
+            <mat-error>E-mail inválido</mat-error>
+          }
+        </mat-form-field>
+
+        @if (!id()) {
+          <mat-form-field appearance="outline">
+            <mat-label>Senha</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input matInput formControlName="password" type="password" aria-label="Senha" />
+            @if (vm.form.get('password')?.hasError('required')) {
+              <mat-error>Senha é obrigatória</mat-error>
+            } @else if (vm.form.get('password')?.hasError('minlength')) {
+              <mat-error>Mínimo de 8 caracteres</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Confirmar senha</mat-label>
+            <mat-icon matPrefix>lock</mat-icon>
+            <input matInput formControlName="confirmPassword" type="password" aria-label="Confirmar senha" />
+            @if (vm.form.get('confirmPassword')?.hasError('required')) {
+              <mat-error>Confirmação é obrigatória</mat-error>
+            } @else if (vm.form.hasError('passwordMismatch') && vm.form.get('confirmPassword')?.touched) {
+              <mat-error>As senhas não coincidem</mat-error>
+            }
+          </mat-form-field>
+        }
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Perfil de acesso</mat-label>
+            <mat-select formControlName="role">
+              <mat-option value="operations">Operações</mat-option>
+              <mat-option value="admin">Administrador</mat-option>
+            </mat-select>
+            @if (vm.form.get('role')?.hasError('required')) {
+              <mat-error>Perfil é obrigatório</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de conta</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="individual">Individual</mat-option>
+              <mat-option value="corporate">Corporativo</mat-option>
+              <mat-option value="system">Sistema</mat-option>
+            </mat-select>
+            @if (vm.form.get('type')?.hasError('required')) {
+              <mat-error>Tipo é obrigatório</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        @if (vm.error()) {
+          <p class="feedback feedback--error">
+            <mat-icon>error_outline</mat-icon> {{ vm.error() }}
+          </p>
+        }
+
+        <div class="form__actions">
+          <a mat-stroked-button routerLink="/users">Cancelar</a>
+          <button mat-flat-button color="primary" type="submit" [disabled]="vm.form.invalid || vm.saving()">
+            @if (vm.saving()) {
+              <mat-progress-spinner diameter="18" mode="indeterminate" />
+            } @else {
+              {{ id() ? 'Salvar alterações' : 'Criar usuário' }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

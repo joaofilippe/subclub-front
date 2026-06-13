@@ -22,7 +22,7 @@
     <mat-form-field appearance="outline" class="filters__search">
       <mat-label>Buscar por nome ou e-mail</mat-label>
       <mat-icon matPrefix>search</mat-icon>
-      <input matInput [(ngModel)]="searchTermValue" (ngModelChange)="vm.searchTerm.set($event)" />
+      <input matInput [(ngModel)]="searchTermValue" (ngModelChange)="vm.searchTerm.set($event)" aria-label="Buscar por nome ou e-mail" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="filters__status">
