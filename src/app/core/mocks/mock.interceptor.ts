@@ -74,7 +74,7 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
   }
   if (method === 'POST' && path === '/users') {
     const b = body as CreateUserRequest;
-    const created = { id: String(Date.now()), name: b.email.split('@')[0], ...b, active: true, createdAt: new Date().toISOString() };
+    const created = { id: String(Date.now()), ...b, createdAt: new Date().toISOString() };
     MOCK_USERS.push(created);
     return respond(created);
   }

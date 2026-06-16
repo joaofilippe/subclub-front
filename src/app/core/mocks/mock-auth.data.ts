@@ -35,7 +35,6 @@ export function getMockAuthResponse(email: string, users: SystemUser[]) {
     name: user.name,
     email: user.email,
     role: user.role,
-    type: user.type,
     account_slug: 'cafe-do-norte',
     exp: 9999999999,
     iat: 1000000000,
