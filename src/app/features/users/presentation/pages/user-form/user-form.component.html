@@ -15,6 +15,26 @@
       <form [formGroup]="vm.form" (ngSubmit)="vm.save(id())" class="form">
 
         <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="name" type="text" aria-label="Nome" />
+          @if (vm.form.get('name')?.hasError('required')) {
+            <mat-error>Nome é obrigatório</mat-error>
+          }
+        </mat-form-field>
+
+        @if (!id()) {
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <mat-icon matPrefix>alternate_email</mat-icon>
+            <input matInput formControlName="username" type="text" aria-label="Username" autocomplete="username" />
+            @if (vm.form.get('username')?.hasError('required')) {
+              <mat-error>Username é obrigatório</mat-error>
+            }
+          </mat-form-field>
+        }
+
+        <mat-form-field appearance="outline">
           <mat-label>E-mail</mat-label>
           <mat-icon matPrefix>email</mat-icon>
           <input matInput formControlName="email" type="email" aria-label="E-mail" />
@@ -49,30 +69,16 @@
           </mat-form-field>
         }
 
-        <div class="row">
-          <mat-form-field appearance="outline">
-            <mat-label>Perfil de acesso</mat-label>
-            <mat-select formControlName="role">
-              <mat-option value="operations">Operações</mat-option>
-              <mat-option value="admin">Administrador</mat-option>
-            </mat-select>
-            @if (vm.form.get('role')?.hasError('required')) {
-              <mat-error>Perfil é obrigatório</mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Tipo de conta</mat-label>
-            <mat-select formControlName="type">
-              <mat-option value="individual">Individual</mat-option>
-              <mat-option value="corporate">Corporativo</mat-option>
-              <mat-option value="system">Sistema</mat-option>
-            </mat-select>
-            @if (vm.form.get('type')?.hasError('required')) {
-              <mat-error>Tipo é obrigatório</mat-error>
-            }
-          </mat-form-field>
-        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Perfil de acesso</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="operations">Operações</mat-option>
+            <mat-option value="admin">Administrador</mat-option>
+          </mat-select>
+          @if (vm.form.get('role')?.hasError('required')) {
+            <mat-error>Perfil é obrigatório</mat-error>
+          }
+        </mat-form-field>
 
         @if (vm.error()) {
           <p class="feedback feedback--error">

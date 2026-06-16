@@ -19,7 +19,7 @@ export class PlanStore {
     this._loading.set(true);
     this.service.getAll().subscribe({
       next: plans => {
-        this._plans.set(plans);
+        this._plans.set(Array.isArray(plans) ? plans : []);
         this._loading.set(false);
       },
       error: err => {

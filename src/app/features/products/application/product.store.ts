@@ -19,7 +19,7 @@ export class ProductStore {
     this._loading.set(true);
     this.service.getAll().subscribe({
       next: products => {
-        this._products.set(products);
+        this._products.set(Array.isArray(products) ? products : []);
         this._loading.set(false);
       },
       error: err => {
