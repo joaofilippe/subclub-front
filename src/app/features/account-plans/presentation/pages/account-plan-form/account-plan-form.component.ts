@@ -1,7 +1,7 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CurrencyPipe } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { AccountPlanFormViewModel } from './account-plan-form.viewmodel';
   selector: 'app-account-plan-form',
   standalone: true,
   providers: [AccountPlanFormViewModel],
-  imports: [RouterLink, ReactiveFormsModule, CurrencyPipe, MatFormFieldModule, MatInputModule,
+  imports: [RouterLink, ReactiveFormsModule, MatFormFieldModule, MatInputModule,
     MatButtonModule, MatIconModule, MatSlideToggleModule, MatProgressSpinnerModule, MatTooltipModule,
     BrlCurrencyDirective],
   templateUrl: './account-plan-form.component.html',
