@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { LoginViewModel } from './login.viewmodel';
 
 @Component({
@@ -19,12 +20,14 @@ import { LoginViewModel } from './login.viewmodel';
     MatInputModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   vm = inject(LoginViewModel);
-  showPassword = false;
+  showPasswordEmail = false;
+  showPasswordUsername = false;
 }

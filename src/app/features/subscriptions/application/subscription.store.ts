@@ -24,7 +24,7 @@ export class SubscriptionStore {
     this._loading.set(true);
     this.service.getAll(filter).subscribe({
       next: res => {
-        this._subscriptions.set(res.data);
+        this._subscriptions.set(res.data ?? []);
         this._pagination.set(res.pagination);
         this._loading.set(false);
       },

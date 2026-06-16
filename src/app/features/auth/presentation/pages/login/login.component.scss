@@ -73,6 +73,14 @@
   justify-content: center;
 }
 
+.auth-card__tab-body {
+  padding-top: 16px;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-content {
+  overflow: hidden;
+}
+
 .auth-card__footer {
   text-align: center;
   margin-top: 20px;

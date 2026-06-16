@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 import { ApiService } from '../http/api.service';
-import { AuthUser, JwtClaims, LoginRequest } from './auth.model';
+import { AuthUser, JwtClaims, LoginRequest, UsernameLoginRequest } from './auth.model';
 
 const TOKEN_KEY = 'subclub_token';
 
@@ -23,7 +23,14 @@ export class AuthService {
     );
   }
 
-  logout(): void {
+  loginWithUsername(credentials: UsernameLoginRequest): Observable<AuthUser> {
+    return this.api.post<LoginApiResponse>('/auth/login/username', credentials).pipe(
+      tap(res => localStorage.setItem(TOKEN_KEY, res.data.token)),
+      map(res => this.buildUser(this.decodeClaims(res.data.token)))
+    );
+  }
+
+  logout(): void { 
     localStorage.removeItem(TOKEN_KEY);
     this.router.navigate(['/auth/login']);
   }

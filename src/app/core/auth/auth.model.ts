@@ -3,6 +3,12 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface UsernameLoginRequest {
+  username: string;
+  account_slug: string;
+  password: string;
+}
+
 export type UserRole = 'admin' | 'operations';
 export type UserType = 'individual' | 'corporate' | 'system';
 

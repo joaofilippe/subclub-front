@@ -1,7 +1,48 @@
-// JWT com claims: sub=1, role=admin, type=system, account_slug=cafe-do-norte, exp=9999999999
-const MOCK_JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6IkFkbWluIE1vY2siLCJlbWFpbCI6ImFkbWluQHN1YmNsdWIuY29tIiwicm9sZSI6ImFkbWluIiwidHlwZSI6InN5c3RlbSIsImFjY291bnRfc2x1ZyI6ImNhZmUtZG8tbm9ydGUiLCJleHAiOjk5OTk5OTk5OTksImlhdCI6MTAwMDAwMDAwMH0.mock-sig';
+import { SystemUser } from '../../features/users/domain/models/system-user.model';
 
-export const MOCK_AUTH_RESPONSE = {
-  data: { token: MOCK_JWT },
-  message: 'Login realizado com sucesso'
-};
+function makeMockJwt(claims: object): string {
+  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  const payload = btoa(JSON.stringify(claims))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  return `${header}.${payload}.mock-sig`;
+}
+
+export function getMockUsernameAuthResponse(username: string, account_slug: string) {
+  const token = makeMockJwt({
+    sub: 'usr-tenant-mock',
+    name: username,
+    email: `${username}@${account_slug}.mock`,
+    role: 'operations',
+    type: 'individual',
+    account_slug,
+    exp: 9999999999,
+    iat: 1000000000,
+  });
+
+  return {
+    data: { token },
+    message: 'Login realizado com sucesso',
+  };
+}
+
+export function getMockAuthResponse(email: string, users: SystemUser[]) {
+  const user = users.find(u => u.email === email);
+  if (!user) return null;
+
+  const token = makeMockJwt({
+    sub: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    type: user.type,
+    account_slug: 'cafe-do-norte',
+    exp: 9999999999,
+    iat: 1000000000,
+  });
+
+  return {
+    data: { token },
+    message: 'Login realizado com sucesso',
+  };
+}

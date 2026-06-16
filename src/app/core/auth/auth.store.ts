@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { LoginRequest } from './auth.model';
+import { LoginRequest, UsernameLoginRequest } from './auth.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
@@ -35,6 +35,27 @@ export class AuthStore {
         this._loading.set(false);
       }
     });
+  }
+
+  loginWithUsername(credentials: UsernameLoginRequest): void {
+    this._loading.set(true);
+    this._error.set(null);
+
+    this.authService.loginWithUsername(credentials).subscribe({
+      next: user => {
+        this._user.set(user);
+        this._loading.set(false);
+        this.router.navigate(['/dashboard']);
+      },
+      error: err => {
+        this._error.set(err?.error?.message ?? 'Erro ao fazer login');
+        this._loading.set(false);
+      }
+    });
+  }
+
+  clearError(): void {
+    this._error.set(null);
   }
 
   updateUser(partial: Partial<import('./auth.model').AuthUser>): void {

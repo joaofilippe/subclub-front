@@ -1,6 +1,6 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { of, delay } from 'rxjs';
-import { MOCK_AUTH_RESPONSE } from './mock-auth.data';
+import { getMockAuthResponse, getMockUsernameAuthResponse } from './mock-auth.data';
 import { MOCK_CLIENTS, MOCK_CLIENTS_PAGED } from './mock-clients.data';
 import { MOCK_PLANS } from './mock-plans.data';
 import { MOCK_PRODUCTS } from './mock-products.data';
@@ -50,7 +50,16 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
   const body = req.body;
 
   // Auth
-  if (method === 'POST' && path === '/auth/login') return respond(MOCK_AUTH_RESPONSE);
+  if (method === 'POST' && path === '/auth/login') {
+    const { email } = body as { email: string; password: string };
+    const authResponse = getMockAuthResponse(email, MOCK_USERS);
+    if (authResponse) return respond(authResponse);
+    return next(req);
+  }
+  if (method === 'POST' && path === '/auth/login/username') {
+    const { username, account_slug } = body as { username: string; account_slug: string; password: string };
+    return respond(getMockUsernameAuthResponse(username, account_slug));
+  }
   if (method === 'POST' && path === '/auth/register') return respond({ message: 'Conta criada com sucesso' });
   if (method === 'PUT'  && path === '/auth/profile') return respond({ message: 'Perfil atualizado com sucesso' });
   if (method === 'POST' && path === '/auth/change-password') return respond({ message: 'Senha alterada com sucesso' });
