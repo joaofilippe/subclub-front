@@ -1,19 +1,12 @@
 {
   "permissions": {
     "allow": [
+      "Bash(git *)",
       "Bash(npx tsc *)",
-      "Bash(grep -v '\\\\$ref')",
-      "Bash(python3 -c ' *)",
-      "Bash(node -e ' *)",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(k,':',v\\) for k,v in d.get\\('scripts',{}\\).items\\(\\)]\")",
-      "Bash(git -C c:/projects/angular/subclub-front add CLAUDE.md docs/design/frontend-architecture.md docs/design/frontend-conventions.md)",
-      "Bash(git -C c:/projects/angular/subclub-front commit -m \"docs: reorganize CLAUDE.md — move arch and conventions to docs/design/\")",
-      "Bash(git -C c:/projects/angular/subclub-front status)",
-      "Bash(git -C c:/projects/angular/subclub-front log --oneline -5)",
-      "Bash(git -C c:/projects/angular/subclub-front diff --stat)",
-      "Bash(git -C c:/projects/angular/subclub-front diff -- src/)",
-      "Bash(git -C c:/projects/angular/subclub-front add src/app/features/clients/application/client.service.ts src/app/features/plans/application/plan.service.ts src/app/features/plans/application/plan.store.ts src/app/features/plans/domain/models/plan.model.ts src/app/features/products/application/product.service.ts src/app/features/products/application/product.store.ts src/app/features/products/domain/models/product.model.ts src/app/features/users/domain/models/system-user.model.ts src/app/features/users/presentation/pages/user-form/user-form.component.html src/app/features/users/presentation/pages/user-form/user-form.viewmodel.ts)",
-      "Bash(git -C c:/projects/angular/subclub-front commit -m ' *)"
+      "Bash(python3 -c *)",
+      "Bash(node -e *)",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
     ]
   }
 }
