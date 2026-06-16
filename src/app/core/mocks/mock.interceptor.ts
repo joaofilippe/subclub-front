@@ -46,7 +46,7 @@ function crudHandlers<T extends { id: string }>(
 
 export const mockInterceptor: HttpInterceptorFn = (req, next) => {
   const { method, url } = req;
-  const path = url.replace(/.*\/api/, '');
+  const path = url.replace(/.*\/v1/, '');
   const body = req.body;
 
   // Auth
