@@ -6,7 +6,11 @@
       "Bash(python3 -c *)",
       "Bash(node -e *)",
       "Skill(update-config)",
-      "Skill(update-config:*)"
+      "Skill(update-config:*)",
+      "Bash(npm run *)",
+      "Bash(taskkill /F /IM node.exe)",
+      "PowerShell(Get-Process -Name node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)"
     ]
   }
 }
