@@ -22,11 +22,12 @@ export class UserFormViewModel {
   readonly error = signal<string | null>(null);
 
   readonly form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    name:            ['', Validators.required],
+    username:        ['', Validators.required],
+    email:           ['', [Validators.required, Validators.email]],
+    password:        ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', Validators.required],
-    role: ['operations' as 'admin' | 'operations', Validators.required],
-    type: ['individual' as 'individual' | 'corporate' | 'system', Validators.required],
+    role:            ['operations' as 'admin' | 'operations', Validators.required],
   }, { validators: passwordMatchValidator });
 
   load(id: string): void {
@@ -34,14 +35,17 @@ export class UserFormViewModel {
 
     const pwCtrl = this.form.get('password')!;
     const confirmCtrl = this.form.get('confirmPassword')!;
+    const usernameCtrl = this.form.get('username')!;
     pwCtrl.clearValidators();
     confirmCtrl.clearValidators();
+    usernameCtrl.clearValidators();
     pwCtrl.updateValueAndValidity();
     confirmCtrl.updateValueAndValidity();
+    usernameCtrl.updateValueAndValidity();
 
     this.service.getById(id).subscribe({
       next: user => {
-        this.form.patchValue({ email: user.email, role: user.role, type: user.type });
+        this.form.patchValue({ name: user.name, email: user.email, role: user.role });
         this.loading.set(false);
       },
       error: () => this.loading.set(false)
@@ -51,13 +55,13 @@ export class UserFormViewModel {
   save(id?: string): void {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
 
-    const { email, password, role, type } = this.form.getRawValue();
+    const { name, username, email, password, role } = this.form.getRawValue();
     this.saving.set(true);
     this.error.set(null);
 
     const request$ = id
-      ? this.service.update(id, { email: email!, role: role!, type: type! })
-      : this.service.create({ email: email!, password: password!, role: role!, type: type! });
+      ? this.service.update(id, { name: name!, role: role! })
+      : this.service.create({ name: name!, username: username!, email: email!, password: password!, role: role! });
 
     request$.subscribe({
       next: user => {

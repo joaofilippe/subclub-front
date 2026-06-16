@@ -1,24 +1,24 @@
-import { UserRole, UserType } from '../../../../core/auth/auth.model';
+import { UserRole } from '../../../../core/auth/auth.model';
 
 export interface SystemUser {
   id: string;
-  email: string;
   name: string;
+  username: string;
+  email: string;
   role: UserRole;
-  type: UserType;
-  active: boolean;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface CreateUserRequest {
+  name: string;
+  username: string;
   email: string;
   password: string;
   role: UserRole;
-  type: UserType;
 }
 
 export interface UpdateUserRequest {
-  email: string;
+  name: string;
   role: UserRole;
-  type: UserType;
 }
